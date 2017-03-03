@@ -1,0 +1,4 @@
+[submodule "synth"]
+	path = synth
+	url = https://github.com/molip/synth
+	branch = model
