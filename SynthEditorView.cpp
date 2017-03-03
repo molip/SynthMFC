@@ -13,6 +13,7 @@
 #include "SynthEditorView.h"
 
 #include "synth/libSynth/Controller.h"
+#include "synth/libKernel/Debug.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -67,9 +68,42 @@ BOOL CSynthEditorView::PreCreateWindow(CREATESTRUCT& cs)
 
 void CSynthEditorView::OnDraw(CDC* dc)
 {
+	CPen blackPen(PS_SOLID, 1, RGB(0, 0, 0));
+	CPen bluePen(PS_SOLID, 1, RGB(0, 0, 255));
+	CPen redPen(PS_SOLID, 1, RGB(255, 0, 0));
+
+	CFont font;
+	font.CreateStockObject(DEFAULT_GUI_FONT);
+
+	LOGFONT lf;
+	font.GetLogFont(&lf);
+	lf.lfHeight = long(lf.lfHeight * 0.7);
+
+	CFont smallFont;
+	smallFont.CreateFontIndirect(&lf);
+
 	auto MakeCRect = [] (const Synth::Model::Rect& rect)
 	{
 		return CRect(rect.Left(), rect.Top(), rect.Right(), rect.Bottom());
+	};
+
+	auto GetPen = [&] (Synth::UI::Colour colour) -> CPen&
+	{
+		switch(colour)
+		{
+			case Synth::UI::Colour::Red: return redPen;
+			case Synth::UI::Colour::Blue: return bluePen;
+			default: KERNEL_ASSERT(false);
+		}
+		return blackPen;
+	};
+
+	auto DrawPin = [&] (const auto& pin)
+	{
+		dc->SelectObject(&GetPen(pin.colour));
+		auto pinRect = MakeCRect(pin.rect);
+		dc->Rectangle(pinRect);
+		dc->DrawText(CString(pin.name.c_str()), pinRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 	};
 
 	CSynthEditorDoc* pDoc = GetDocument();
@@ -79,21 +113,23 @@ void CSynthEditorView::OnDraw(CDC* dc)
 
 	for (auto& modIkon : _controller->GetModuleIkons())
 	{
-		auto rect = MakeCRect(modIkon.GetRect());
-		dc->Rectangle(rect);
-		dc->TextOut(rect.left + 10, rect.top + 10, CString(modIkon.GetName().c_str()));
+		dc->SelectObject(&smallFont);
 
 		for (auto& pin : modIkon.GetInputPins())
-		{
-			auto pinRect = MakeCRect(pin.rect);
-			dc->Rectangle(pinRect);
-		}
+			DrawPin(pin);
+
 		for (auto& pin : modIkon.GetOutputPins())
-		{
-			auto pinRect = MakeCRect(pin.rect);
-			dc->Rectangle(pinRect);
-		}
+			DrawPin(pin);
+
+		dc->SelectObject(&font);
+		dc->SelectObject(&GetPen(modIkon.GetColour()));
+		auto rect = MakeCRect(modIkon.GetRect());
+		dc->Rectangle(rect);
+		dc->DrawText(CString(modIkon.GetName().c_str()), rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
 	}
+
+	dc->SelectStockObject(BLACK_PEN);
+	dc->SelectStockObject(DEFAULT_GUI_FONT);
 }
 
 
