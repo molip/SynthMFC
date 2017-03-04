@@ -87,6 +87,11 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		return CRect(rect.Left(), rect.Top(), rect.Right(), rect.Bottom());
 	};
 
+	auto MakeCPoint = [] (const Synth::Model::Point& point)
+	{
+		return CPoint(point.x, point.y);
+	};
+
 	auto GetPen = [&] (Synth::UI::Colour colour) -> CPen&
 	{
 		switch(colour)
@@ -130,6 +135,18 @@ void CSynthEditorView::OnDraw(CDC* dc)
 
 	dc->SelectStockObject(BLACK_PEN);
 	dc->SelectStockObject(DEFAULT_GUI_FONT);
+
+	if (const auto& conn = _controller->GetLiveConnection())
+	{
+		dc->MoveTo(MakeCPoint(conn->first));
+		dc->LineTo(MakeCPoint(conn->second));
+	}
+
+	for (const auto& conn : _controller->GetConnections())
+	{
+		dc->MoveTo(MakeCPoint(conn.first));
+		dc->LineTo(MakeCPoint(conn.second));
+	}
 }
 
 
@@ -206,14 +223,17 @@ void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	_controller->OnLButtonDown(Synth::Model::Point(point.x, point.y));
+	if (_controller->OnLButtonDown(Synth::Model::Point(point.x, point.y)))
+		SetCapture();
 }
 
 void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	_controller->OnLButtonUp(Synth::Model::Point(point.x, point.y));
+	Invalidate();
+	if (this == CWnd::GetCapture())
+		ReleaseCapture();
 }
-
 
 void CSynthEditorView::OnEditUndo()
 {
