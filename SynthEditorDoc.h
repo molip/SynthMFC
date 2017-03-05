@@ -2,6 +2,14 @@
 
 #include <memory>
 
+namespace Synth
+{
+	namespace UI
+	{
+		class Controller;
+	}
+}
+
 class CSynthEditorDoc : public CDocument
 {
 protected: // create from serialization only
@@ -10,9 +18,11 @@ protected: // create from serialization only
 
 public:
 	static CSynthEditorDoc* Instance();
-	void Upload() const;
+
+	Synth::UI::Controller& GetController() { return *_controller; }
 
 private:
+	std::unique_ptr<Synth::UI::Controller> _controller;
 
 // Overrides
 public:

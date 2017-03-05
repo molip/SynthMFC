@@ -11,6 +11,7 @@
 
 #include "SynthEditorDoc.h"
 #include "SynthEditorView.h"
+#include "Serial.h"
 
 #include "synth/libSynth/Controller.h"
 #include "synth/libKernel/Debug.h"
@@ -44,7 +45,6 @@ END_MESSAGE_MAP()
 
 CSynthEditorView::CSynthEditorView()
 {
-	_controller = std::make_unique<Synth::UI::Controller>();
 }
 
 CSynthEditorView::~CSynthEditorView()
@@ -116,7 +116,7 @@ void CSynthEditorView::OnDraw(CDC* dc)
 	if (!pDoc)
 		return;
 
-	for (auto& modIkon : _controller->GetModuleIkons())
+	for (auto& modIkon : GetController()->GetModuleIkons())
 	{
 		dc->SelectObject(&smallFont);
 
@@ -136,13 +136,13 @@ void CSynthEditorView::OnDraw(CDC* dc)
 	dc->SelectStockObject(BLACK_PEN);
 	dc->SelectStockObject(DEFAULT_GUI_FONT);
 
-	if (const auto& conn = _controller->GetLiveConnection())
+	if (const auto& conn = GetController()->GetLiveConnection())
 	{
 		dc->MoveTo(MakeCPoint(conn->first));
 		dc->LineTo(MakeCPoint(conn->second));
 	}
 
-	for (const auto& conn : _controller->GetConnections())
+	for (const auto& conn : GetController()->GetConnections())
 	{
 		dc->MoveTo(MakeCPoint(conn.first));
 		dc->LineTo(MakeCPoint(conn.second));
@@ -210,26 +210,37 @@ CSynthEditorDoc* CSynthEditorView::GetDocument() const // non-debug version is i
 }
 #endif //_DEBUG
 
+Synth::UI::Controller* CSynthEditorView::GetController() const
+{
+	return m_pDocument ? &GetDocument()->GetController() : nullptr;
+}
+
 void CSynthEditorView::OnFileUpload()
 {
-	GetDocument()->Upload();
+	SerialPort serial;
+	if (serial.Open())
+	{
+		auto buffer = GetController()->Export();
+		serial.Write(&buffer[0], (DWORD)buffer.size());
+		serial.Close();
+	}
 }
 
 void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (_controller->OnMouseMove(Synth::Model::Point(point.x, point.y)))
+	if (GetController()->OnMouseMove(Synth::Model::Point(point.x, point.y)))
 		Invalidate();
 }
 
 void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	if (_controller->OnLButtonDown(Synth::Model::Point(point.x, point.y)))
+	if (GetController()->OnLButtonDown(Synth::Model::Point(point.x, point.y)))
 		SetCapture();
 }
 
 void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	_controller->OnLButtonUp(Synth::Model::Point(point.x, point.y));
+	GetController()->OnLButtonUp(Synth::Model::Point(point.x, point.y));
 	Invalidate();
 	if (this == CWnd::GetCapture())
 		ReleaseCapture();
@@ -237,22 +248,22 @@ void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 
 void CSynthEditorView::OnEditUndo()
 {
-	_controller->Undo();
+	GetController()->Undo();
 	Invalidate();
 }
 
 void CSynthEditorView::OnUpdateEditUndo(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(_controller->CanUndo());
+	pCmdUI->Enable(GetController()->CanUndo());
 }
 
 void CSynthEditorView::OnEditRedo()
 {
-	_controller->Redo();
+	GetController()->Redo();
 	Invalidate();
 }
 
 void CSynthEditorView::OnUpdateEditRedo(CCmdUI *pCmdUI)
 {
-	pCmdUI->Enable(_controller->CanRedo());
+	pCmdUI->Enable(GetController()->CanRedo());
 }

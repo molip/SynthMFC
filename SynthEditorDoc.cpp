@@ -10,9 +10,8 @@
 #endif
 
 #include "SynthEditorDoc.h"
-#include "Serial.h"
 
-//#include "libKernel/Serial.h"
+#include "synth/libSynth/Controller.h"
 
 #include <propkey.h>
 
@@ -29,6 +28,7 @@ END_MESSAGE_MAP()
 
 CSynthEditorDoc::CSynthEditorDoc()
 {
+	_controller = std::make_unique<Synth::UI::Controller>();
 }
 
 CSynthEditorDoc::~CSynthEditorDoc()
@@ -126,14 +126,3 @@ void CSynthEditorDoc::Dump(CDumpContext& dc) const
 	CDocument::Dump(dc);
 }
 #endif //_DEBUG
-
-void CSynthEditorDoc::Upload() const
-{
-	SerialPort serial;
-	if (serial.Open())
-	{
-		//auto buffer = m_graph->Export();
-		//serial.Write(&buffer[0], (DWORD)buffer.size());
-		serial.Close();
-	}
-}

@@ -21,6 +21,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CSynthEditorDoc* GetDocument() const;
+	Synth::UI::Controller* GetController() const;
 
 	static CSynthEditorView* Instance();
 
@@ -45,7 +46,6 @@ public:
 #endif
 
 protected:
-	std::unique_ptr<Synth::UI::Controller> _controller;
 
 // Generated message map functions
 protected:
@@ -62,6 +62,7 @@ public:
 	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
+	afx_msg void Upload();
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp
