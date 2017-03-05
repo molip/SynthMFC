@@ -26,8 +26,9 @@ private:
 
 // Overrides
 public:
-	virtual BOOL OnNewDocument();
-	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName);
+	virtual BOOL OnNewDocument() override;
+	virtual BOOL OnSaveDocument(LPCTSTR lpszPathName) override;
+	virtual BOOL OnOpenDocument(LPCTSTR lpszPathName) override;
 
 #ifdef SHARED_HANDLERS
 	virtual void InitializeSearchContent();

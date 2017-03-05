@@ -48,15 +48,24 @@ BOOL CSynthEditorDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
+	_controller = std::make_unique<Synth::UI::Controller>();
+
 	return TRUE;
 }
 
 BOOL CSynthEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
 {
-	//Kernel::Serial::SaveClass("C:\\Users\\jxxwh\\test.synth", *m_graph);
+	return _controller->Save(lpszPathName);
+}
 
-	std::wstring s = lpszPathName;
-	return false;
+BOOL CSynthEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
+{
+	auto newController = std::make_unique<Synth::UI::Controller>();
+	if (!newController->Load(lpszPathName))
+		return false;
+
+	_controller = std::move(newController);
+	return true;
 }
 
 #ifdef SHARED_HANDLERS
