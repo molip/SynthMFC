@@ -59,13 +59,19 @@
 #define IDS_EXPLORER                    305
 #define IDS_EDIT_MENU                   306
 #define ID_FILE_UPLOAD                  32771
+#define ID_INSERT_MIDI                  32775
+#define ID_INSERT_ENVELOPE              32776
+#define ID_INSERT_OSCILLATOR            32777
+#define ID_INSERT_POLYMIXER             32778
+#define ID_INSERT_TARGET                32779
+#define ID_EDIT_DELETE                  32785
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32774
+#define _APS_NEXT_COMMAND_VALUE         32788
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

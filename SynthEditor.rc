@@ -143,6 +143,8 @@ BEGIN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
+        MENUITEM "&Upload\tEnter",              ID_FILE_UPLOAD
+        MENUITEM SEPARATOR
         MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
         MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
         MENUITEM "P&rint Setup...",             ID_FILE_PRINT_SETUP
@@ -159,6 +161,8 @@ BEGIN
         MENUITEM "Cu&t\tCtrl+X",                ID_EDIT_CUT
         MENUITEM "&Copy\tCtrl+C",               ID_EDIT_COPY
         MENUITEM "&Paste\tCtrl+V",              ID_EDIT_PASTE
+        MENUITEM SEPARATOR
+        MENUITEM "&Delete\tDel",                ID_EDIT_DELETE
     END
     POPUP "&View"
     BEGIN
@@ -171,6 +175,14 @@ BEGIN
     POPUP "&Help"
     BEGIN
         MENUITEM "&About SynthEditor...",       ID_APP_ABOUT
+    END
+    POPUP "&Insert"
+    BEGIN
+        MENUITEM "MIDI\tCtrl+1",                ID_INSERT_MIDI
+        MENUITEM "Envelope\tCtrl+2",            ID_INSERT_ENVELOPE
+        MENUITEM "Oscillator\tCtrl+3",          ID_INSERT_OSCILLATOR
+        MENUITEM "PolyMixer\tCtrl+4",           ID_INSERT_POLYMIXER
+        MENUITEM "Target\tCtrl+5",              ID_INSERT_TARGET
     END
 END
 
@@ -248,9 +260,15 @@ BEGIN
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
+    VK_RETURN,      ID_FILE_UPLOAD,         VIRTKEY, NOINVERT
+    "2",            ID_INSERT_ENVELOPE,     VIRTKEY, CONTROL, NOINVERT
+    "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
+    "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
+    "4",            ID_INSERT_POLYMIXER,    VIRTKEY, CONTROL, NOINVERT
+    "5",            ID_INSERT_TARGET,       VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
-    VK_RETURN,      ID_FILE_UPLOAD,         VIRTKEY, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
 END
 
 
@@ -477,6 +495,16 @@ END
 STRINGTABLE
 BEGIN
     ID_FILE_UPLOAD          "Upload the graph"
+    ID_INSERT_MIDI          "Insert MIDI module"
+    ID_INSERT_ENVELOPE      "Insert Envelope module"
+    ID_INSERT_OSCILLATOR    "Insert Oscillator module"
+    ID_INSERT_POLYMIXER     "Insert PolyMixer module"
+    ID_INSERT_TARGET        "Insert Target module"
+END
+
+STRINGTABLE
+BEGIN
+    ID_EDIT_DELETE          "Delete selected module"
 END
 
 #endif    // English (United States) resources

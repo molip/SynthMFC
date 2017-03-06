@@ -55,6 +55,9 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileUpload();
+	afx_msg void OnInsertModule(UINT id);
+	afx_msg void OnDeleteModule();
+	afx_msg void OnUpdateDeleteModule(CCmdUI *pCmdUI);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
@@ -62,7 +65,6 @@ public:
 	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
-	afx_msg void Upload();
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

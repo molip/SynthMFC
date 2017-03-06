@@ -39,6 +39,9 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CSynthEditorView::OnUpdateEditUndo)
 	ON_COMMAND(ID_EDIT_REDO, &CSynthEditorView::OnEditRedo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, &CSynthEditorView::OnUpdateEditRedo)
+	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_TARGET, &CSynthEditorView::OnInsertModule)
+	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
+	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 END_MESSAGE_MAP()
 
 // CSynthEditorView construction/destruction
@@ -130,7 +133,22 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		dc->SelectObject(&GetPen(modIkon.GetColour()));
 		auto rect = MakeCRect(modIkon.GetRect());
 		dc->Rectangle(rect);
-		dc->DrawText(CString(modIkon.GetName().c_str()), rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+		UINT format = DT_CENTER | DT_VCENTER | DT_SINGLELINE;
+		CString str(modIkon.GetName().c_str());
+		dc->DrawText(str, rect, format);
+
+		if (modIkon.IsSelected())
+		{
+			CRect textRect = rect;
+			dc->DrawText(str, textRect, format | DT_CALCRECT);
+			
+			textRect.OffsetRect((rect.Width() - textRect.Width()) / 2, 0); // Why is textRect not centred?
+
+			dc->SelectStockObject(BLACK_PEN);
+			dc->MoveTo(textRect.left, textRect.bottom);
+			dc->LineTo(textRect.right, textRect.bottom);
+		}
 	}
 
 	dc->SelectStockObject(BLACK_PEN);
@@ -226,6 +244,28 @@ void CSynthEditorView::OnFileUpload()
 	}
 }
 
+void CSynthEditorView::OnInsertModule(UINT id)
+{
+	int index = id - ID_INSERT_MIDI;
+	const auto types = { "midi", "envl", "oscl", "pmix", "trgt" };
+	if (index >= 0 && index < types.size())
+	{
+		GetController()->InsertModule(*(types.begin() + index));
+	}
+	Invalidate();
+}
+
+void CSynthEditorView::OnDeleteModule()
+{
+	GetController()->DeleteModule();
+	Invalidate();
+}
+
+void CSynthEditorView::OnUpdateDeleteModule(CCmdUI *pCmdUI)
+{
+	pCmdUI->Enable(GetController()->CanDeleteModule());
+}
+
 void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
 	if (GetController()->OnMouseMove(Synth::Model::Point(point.x, point.y)))
@@ -236,6 +276,7 @@ void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	if (GetController()->OnLButtonDown(Synth::Model::Point(point.x, point.y)))
 		SetCapture();
+	Invalidate();
 }
 
 void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
