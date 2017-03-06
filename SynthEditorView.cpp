@@ -154,17 +154,25 @@ void CSynthEditorView::OnDraw(CDC* dc)
 	dc->SelectStockObject(BLACK_PEN);
 	dc->SelectStockObject(DEFAULT_GUI_FONT);
 
-	if (const auto& conn = GetController()->GetLiveConnection())
+	auto DrawConnection = [&](const Synth::UI::Controller::Connection& conn)
 	{
-		dc->MoveTo(MakeCPoint(conn->first));
-		dc->LineTo(MakeCPoint(conn->second));
-	}
+		CPoint points[3];
+		points[0] = MakeCPoint(conn.first);
+		points[1] = MakeCPoint(conn.second);
+		points[2] = MakeCPoint(conn.second);
+
+		points[0].x -= 100;
+		points[1].x += 100;
+
+		dc->MoveTo(MakeCPoint(conn.first));
+		dc->PolyBezierTo(points, 3);
+	};
+
+	if (const auto& conn = GetController()->GetLiveConnection())
+		DrawConnection(*conn);
 
 	for (const auto& conn : GetController()->GetConnections())
-	{
-		dc->MoveTo(MakeCPoint(conn.first));
-		dc->LineTo(MakeCPoint(conn.second));
-	}
+		DrawConnection(conn);
 }
 
 
