@@ -109,9 +109,15 @@ void CSynthEditorView::OnDraw(CDC* dc)
 	auto DrawPin = [&] (const auto& pin)
 	{
 		dc->SelectObject(&GetPen(pin.colour));
-		auto pinRect = MakeCRect(pin.rect);
-		dc->Rectangle(pinRect);
-		dc->DrawText(CString(pin.name.c_str()), pinRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+		auto rect = MakeCRect(pin.connectionRect);
+		int base = pin.isOutput ? rect.left : rect.right;
+		dc->MoveTo(base, rect.top);
+		dc->LineTo(MakeCPoint(pin.GetConnectionPoint()));
+		dc->LineTo(base, rect.bottom);
+
+		CRect labelRect = MakeCRect(pin.labelRect);
+		labelRect.left += 2;
+		dc->DrawText(CString(pin.name.c_str()), labelRect, DT_VCENTER | DT_SINGLELINE);
 	};
 
 	CSynthEditorDoc* pDoc = GetDocument();
@@ -121,14 +127,6 @@ void CSynthEditorView::OnDraw(CDC* dc)
 
 	for (auto& modIkon : GetController()->GetModuleIkons())
 	{
-		dc->SelectObject(&smallFont);
-
-		for (auto& pin : modIkon.GetInputPins())
-			DrawPin(pin);
-
-		for (auto& pin : modIkon.GetOutputPins())
-			DrawPin(pin);
-
 		dc->SelectObject(&font);
 		dc->SelectObject(&GetPen(modIkon.GetColour()));
 		auto rect = MakeCRect(modIkon.GetRect());
@@ -136,19 +134,27 @@ void CSynthEditorView::OnDraw(CDC* dc)
 
 		UINT format = DT_CENTER | DT_VCENTER | DT_SINGLELINE;
 		CString str(modIkon.GetName().c_str());
-		dc->DrawText(str, rect, format);
+		auto labelRect = MakeCRect(modIkon.GetLabelRect());
+		dc->DrawText(str, labelRect, format);
 
 		if (modIkon.IsSelected())
 		{
-			CRect textRect = rect;
-			dc->DrawText(str, textRect, format | DT_CALCRECT);
+			dc->DrawText(str, labelRect, format | DT_CALCRECT);
 			
-			textRect.OffsetRect((rect.Width() - textRect.Width()) / 2, 0); // Why is textRect not centred?
+			labelRect.OffsetRect((rect.Width() - labelRect.Width()) / 2, 0); // Why is textRect not centred?
 
 			dc->SelectStockObject(BLACK_PEN);
-			dc->MoveTo(textRect.left, textRect.bottom);
-			dc->LineTo(textRect.right, textRect.bottom);
+			dc->MoveTo(labelRect.left, labelRect.bottom);
+			dc->LineTo(labelRect.right, labelRect.bottom);
 		}
+
+		dc->SelectObject(&smallFont);
+
+		for (auto& pin : modIkon.GetInputPins())
+			DrawPin(pin);
+
+		for (auto& pin : modIkon.GetOutputPins())
+			DrawPin(pin);
 	}
 
 	dc->SelectStockObject(BLACK_PEN);
