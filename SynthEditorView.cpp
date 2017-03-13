@@ -42,6 +42,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_TARGET, &CSynthEditorView::OnInsertModule)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
+	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
 END_MESSAGE_MAP()
 
 // CSynthEditorView construction/destruction
@@ -253,7 +254,7 @@ void CSynthEditorView::OnFileUpload()
 	if (serial.Open())
 	{
 		auto buffer = GetController()->Export();
-		serial.Write(&buffer[0], (DWORD)buffer.size());
+		serial.Write(&buffer->front(), (DWORD)buffer->size());
 		serial.Close();
 	}
 }
@@ -321,4 +322,23 @@ void CSynthEditorView::OnEditRedo()
 void CSynthEditorView::OnUpdateEditRedo(CCmdUI *pCmdUI)
 {
 	pCmdUI->Enable(GetController()->CanRedo());
+}
+
+void CSynthEditorView::OnToolsUploadMIDIFile()
+{
+	CFileDialog dlg(true, nullptr, nullptr, OFN_HIDEREADONLY | OFN_OVERWRITEPROMPT, L"MIDI files (*.mid)|*.mid|All Files (*.*)|*.*||", ::AfxGetMainWnd());
+	if (dlg.DoModal() == IDOK)
+	{
+		try
+		{
+			auto buffer = GetController()->ExportMIDIFile(dlg.GetPathName().GetBuffer());
+			SerialPort serial;
+			if (serial.Open())
+				serial.Write(&buffer->front(), (DWORD)buffer->size());
+		}
+		catch (Synth::Exception& e)
+		{
+			::AfxMessageBox(CString(e.what()), MB_ICONWARNING);
+		}
+	}
 }

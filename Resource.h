@@ -65,13 +65,14 @@
 #define ID_INSERT_POLYMIXER             32778
 #define ID_INSERT_TARGET                32779
 #define ID_EDIT_DELETE                  32785
+#define ID_TOOLS_UPLOADMIDIFILE         32788
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        310
-#define _APS_NEXT_COMMAND_VALUE         32788
+#define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

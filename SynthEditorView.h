@@ -65,6 +65,7 @@ public:
 	afx_msg void OnUpdateEditUndo(CCmdUI *pCmdUI);
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
+	afx_msg void OnToolsUploadMIDIFile();
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

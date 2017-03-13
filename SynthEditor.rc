@@ -172,10 +172,6 @@ BEGIN
         END
         MENUITEM "&Status Bar",                 ID_VIEW_STATUS_BAR
     END
-    POPUP "&Help"
-    BEGIN
-        MENUITEM "&About SynthEditor...",       ID_APP_ABOUT
-    END
     POPUP "&Insert"
     BEGIN
         MENUITEM "MIDI\tCtrl+1",                ID_INSERT_MIDI
@@ -183,6 +179,14 @@ BEGIN
         MENUITEM "Oscillator\tCtrl+3",          ID_INSERT_OSCILLATOR
         MENUITEM "PolyMixer\tCtrl+4",           ID_INSERT_POLYMIXER
         MENUITEM "Target\tCtrl+5",              ID_INSERT_TARGET
+    END
+    POPUP "&Tools"
+    BEGIN
+        MENUITEM "&Upload MIDI File...",        ID_TOOLS_UPLOADMIDIFILE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About SynthEditor...",       ID_APP_ABOUT
     END
 END
 
@@ -252,6 +256,7 @@ BEGIN
     VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL, NOINVERT
     VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT, NOINVERT
     "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL, NOINVERT
+    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
     "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL, NOINVERT
     VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT, NOINVERT
     "Z",            ID_EDIT_REDO,           VIRTKEY, SHIFT, CONTROL, NOINVERT
@@ -268,7 +273,7 @@ BEGIN
     "5",            ID_INSERT_TARGET,       VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
-    VK_DELETE,      ID_EDIT_DELETE,         VIRTKEY, NOINVERT
+    "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -505,6 +510,7 @@ END
 STRINGTABLE
 BEGIN
     ID_EDIT_DELETE          "Delete selected module"
+    ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
 END
 
 #endif    // English (United States) resources
