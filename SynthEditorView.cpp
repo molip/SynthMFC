@@ -107,7 +107,7 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		return blackPen;
 	};
 
-	auto DrawPin = [&] (const auto& pin)
+	auto DrawPin = [&] (const Synth::UI::ModuleIkon::Pin& pin)
 	{
 		dc->SelectObject(&GetPen(pin.colour));
 		auto rect = MakeCRect(pin.connectionRect);
@@ -119,6 +119,15 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		CRect labelRect = MakeCRect(pin.labelRect);
 		labelRect.left += 2;
 		dc->DrawText(CString(pin.name.c_str()), labelRect, DT_VCENTER | DT_SINGLELINE);
+
+		if (pin.showValue)
+		{
+			dc->SelectStockObject(BLACK_PEN);
+			CRect valueRect = MakeCRect(pin.valueRect);
+			dc->Rectangle(valueRect);
+			valueRect.right -= 2;
+			dc->DrawText(CString(pin.value.c_str()), valueRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+		}
 	};
 
 	CSynthEditorDoc* pDoc = GetDocument();
