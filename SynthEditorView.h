@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "synth/libSynth/View.h"
+
 namespace Synth
 {
 	namespace UI
@@ -12,7 +14,7 @@ namespace Synth
 	}
 }
 
-class CSynthEditorView : public CView
+class CSynthEditorView : public CView, private Synth::UI::View
 {
 protected: // create from serialization only
 	CSynthEditorView();
@@ -36,6 +38,10 @@ protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+
+	virtual void InvalidateAll();
+	virtual void SetCapture(bool capture);
+	virtual void CancelValueEdit();
 
 // Implementation
 public:
@@ -66,6 +72,7 @@ public:
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
 	afx_msg void OnToolsUploadMIDIFile();
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

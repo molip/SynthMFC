@@ -28,7 +28,7 @@ END_MESSAGE_MAP()
 
 CSynthEditorDoc::CSynthEditorDoc()
 {
-	_controller = std::make_unique<Synth::UI::Controller>();
+	CreateController();
 }
 
 CSynthEditorDoc::~CSynthEditorDoc()
@@ -43,12 +43,19 @@ CSynthEditorDoc* CSynthEditorDoc::Instance()
 	return nullptr;
 }
 
+void CSynthEditorDoc::CreateController()
+{
+	Synth::UI::View* view = _controller ? _controller->GetView() : nullptr;
+	_controller = std::make_unique<Synth::UI::Controller>();
+	_controller->SetView(view);
+}
+
 BOOL CSynthEditorDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	_controller = std::make_unique<Synth::UI::Controller>();
+	CreateController();
 
 	return TRUE;
 }
@@ -60,11 +67,13 @@ BOOL CSynthEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
 BOOL CSynthEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
+	Synth::UI::View* view = _controller ? _controller->GetView() : nullptr;
 	auto newController = std::make_unique<Synth::UI::Controller>();
 	if (!newController->Load(lpszPathName))
 		return false;
 
 	_controller = std::move(newController);
+	_controller->SetView(view);
 	return true;
 }
 

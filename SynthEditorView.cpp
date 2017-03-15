@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 // CSynthEditorView construction/destruction
@@ -218,6 +219,23 @@ void CSynthEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	// TODO: add cleanup after printing
 }
 
+void CSynthEditorView::InvalidateAll()
+{
+	Invalidate();
+}
+
+void CSynthEditorView::SetCapture(bool capture)
+{
+	if (capture)
+		CView::SetCapture();
+	else if (this == CWnd::GetCapture())
+		ReleaseCapture();
+}
+
+void CSynthEditorView::CancelValueEdit()
+{
+}
+
 void CSynthEditorView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
 	ClientToScreen(&point);
@@ -276,13 +294,11 @@ void CSynthEditorView::OnInsertModule(UINT id)
 	{
 		GetController()->InsertModule(*(types.begin() + index));
 	}
-	Invalidate();
 }
 
 void CSynthEditorView::OnDeleteModule()
 {
 	GetController()->DeleteModule();
-	Invalidate();
 }
 
 void CSynthEditorView::OnUpdateDeleteModule(CCmdUI *pCmdUI)
@@ -292,29 +308,22 @@ void CSynthEditorView::OnUpdateDeleteModule(CCmdUI *pCmdUI)
 
 void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (GetController()->OnMouseMove(Synth::Model::Point(point.x, point.y)))
-		Invalidate();
+	GetController()->OnMouseMove(Synth::Model::Point(point.x, point.y));
 }
 
 void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	if (GetController()->OnLButtonDown(Synth::Model::Point(point.x, point.y)))
-		SetCapture();
-	Invalidate();
+	GetController()->OnLButtonDown(Synth::Model::Point(point.x, point.y));
 }
 
 void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	GetController()->OnLButtonUp(Synth::Model::Point(point.x, point.y));
-	Invalidate();
-	if (this == CWnd::GetCapture())
-		ReleaseCapture();
 }
 
 void CSynthEditorView::OnEditUndo()
 {
 	GetController()->Undo();
-	Invalidate();
 }
 
 void CSynthEditorView::OnUpdateEditUndo(CCmdUI *pCmdUI)
@@ -325,7 +334,6 @@ void CSynthEditorView::OnUpdateEditUndo(CCmdUI *pCmdUI)
 void CSynthEditorView::OnEditRedo()
 {
 	GetController()->Redo();
-	Invalidate();
 }
 
 void CSynthEditorView::OnUpdateEditRedo(CCmdUI *pCmdUI)
@@ -350,4 +358,15 @@ void CSynthEditorView::OnToolsUploadMIDIFile()
 			::AfxMessageBox(CString(e.what()), MB_ICONWARNING);
 		}
 	}
+}
+
+
+int CSynthEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (__super::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	GetDocument()->GetController().SetView(this);
+
+	return 0;
 }

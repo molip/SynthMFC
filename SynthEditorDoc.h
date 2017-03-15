@@ -22,6 +22,8 @@ public:
 	Synth::UI::Controller& GetController() { return *_controller; }
 
 private:
+	void CSynthEditorDoc::CreateController();
+
 	std::unique_ptr<Synth::UI::Controller> _controller;
 
 // Overrides
