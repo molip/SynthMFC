@@ -12,6 +12,9 @@
 #include "SynthEditorDoc.h"
 #include "SynthEditorView.h"
 #include "Serial.h"
+#include "Resource.h"
+#include "EditCtrlDialog.h"
+#include "Messages.h"
 
 #include "synth/libSynth/Controller.h"
 #include "synth/libKernel/Debug.h"
@@ -35,6 +38,8 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_MESSAGE_VOID(Message::CancelEdit, OnEditCancel)
+	ON_MESSAGE_VOID(Message::CommitEdit, OnEditCommit)
 	ON_COMMAND(ID_EDIT_UNDO, &CSynthEditorView::OnEditUndo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CSynthEditorView::OnUpdateEditUndo)
 	ON_COMMAND(ID_EDIT_REDO, &CSynthEditorView::OnEditRedo)
@@ -45,12 +50,34 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
 END_MESSAGE_MAP()
 
+namespace
+{
+	CRect MakeCRect(const Synth::Model::Rect& rect)
+	{
+		return CRect(rect.Left(), rect.Top(), rect.Right(), rect.Bottom());
+	}
+
+	CPoint MakeCPoint(const Synth::Model::Point& point)
+	{
+		return CPoint(point.x, point.y);
+	}
+}
+
 CSynthEditorView* CSynthEditorView::_instance;
 
 CSynthEditorView::CSynthEditorView()
 {
 	KERNEL_ASSERT(!_instance);
 	_instance = this;
+
+	_font.CreateStockObject(DEFAULT_GUI_FONT);
+
+	LOGFONT lf;
+	_font.GetLogFont(&lf);
+	lf.lfHeight = long(lf.lfHeight * 0.7);
+
+	_smallFont.CreateFontIndirect(&lf);
+
 }
 
 CSynthEditorView::~CSynthEditorView()
@@ -73,26 +100,6 @@ void CSynthEditorView::OnDraw(CDC* dc)
 	CPen blackPen(PS_SOLID, 1, RGB(0, 0, 0));
 	CPen bluePen(PS_SOLID, 1, RGB(0, 0, 255));
 	CPen redPen(PS_SOLID, 1, RGB(255, 0, 0));
-
-	CFont font;
-	font.CreateStockObject(DEFAULT_GUI_FONT);
-
-	LOGFONT lf;
-	font.GetLogFont(&lf);
-	lf.lfHeight = long(lf.lfHeight * 0.7);
-
-	CFont smallFont;
-	smallFont.CreateFontIndirect(&lf);
-
-	auto MakeCRect = [] (const Synth::Model::Rect& rect)
-	{
-		return CRect(rect.Left(), rect.Top(), rect.Right(), rect.Bottom());
-	};
-
-	auto MakeCPoint = [] (const Synth::Model::Point& point)
-	{
-		return CPoint(point.x, point.y);
-	};
 
 	auto GetPen = [&] (Synth::UI::Colour colour) -> CPen&
 	{
@@ -128,14 +135,12 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		}
 	};
 
-	CSynthEditorDoc* pDoc = GetDocument();
-	ASSERT_VALID(pDoc);
-	if (!pDoc)
+	if (!GetController())
 		return;
 
 	for (auto& modIkon : GetController()->GetModuleIkons())
 	{
-		dc->SelectObject(&font);
+		dc->SelectObject(&_font);
 		dc->SelectObject(&GetPen(modIkon.GetColour()));
 		auto rect = MakeCRect(modIkon.GetRect());
 		dc->Rectangle(rect);
@@ -156,7 +161,7 @@ void CSynthEditorView::OnDraw(CDC* dc)
 			dc->LineTo(labelRect.right, labelRect.bottom);
 		}
 
-		dc->SelectObject(&smallFont);
+		dc->SelectObject(&_smallFont);
 
 		for (auto& pin : modIkon.GetInputPins())
 			DrawPin(pin);
@@ -229,8 +234,15 @@ void CSynthEditorView::SetCapture(bool capture)
 		ReleaseCapture();
 }
 
-void CSynthEditorView::CancelValueEdit()
+void CSynthEditorView::StartValueEdit(const Synth::Model::Rect & rect, const std::string& str)
 {
+	KERNEL_ASSERT(!_editCtrlDialog);
+
+	CRect screenRect = MakeCRect(rect);
+	ClientToScreen(screenRect);
+
+	_editCtrlDialog = std::make_unique<EditCtrlDialog>(this);
+	_editCtrlDialog->Create(screenRect, CString(str.c_str()), _smallFont);
 }
 
 void CSynthEditorView::OnRButtonUp(UINT /* nFlags */, CPoint point)
@@ -355,4 +367,21 @@ void CSynthEditorView::OnToolsUploadMIDIFile()
 			::AfxMessageBox(CString(e.what()), MB_ICONWARNING);
 		}
 	}
+}
+
+void CSynthEditorView::OnEditCancel()
+{
+	_editCtrlDialog.reset();
+}
+
+void CSynthEditorView::OnEditCommit()
+{
+	CStringA text(_editCtrlDialog->GetText());
+	GetController()->CommitValueEdit(std::string(text));
+	_editCtrlDialog.reset();
+}
+
+BOOL CSynthEditorView::PreTranslateMessage(MSG* pMsg)
+{
+	return __super::PreTranslateMessage(pMsg);
 }

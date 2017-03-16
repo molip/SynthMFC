@@ -14,6 +14,8 @@ namespace Synth
 	}
 }
 
+class EditCtrlDialog;
+
 class CSynthEditorView : public CView, public Synth::UI::View
 {
 protected: // create from serialization only
@@ -39,9 +41,9 @@ protected:
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-	virtual void InvalidateAll();
-	virtual void SetCapture(bool capture);
-	virtual void CancelValueEdit();
+	virtual void InvalidateAll() override;
+	virtual void SetCapture(bool capture) override;
+	virtual void StartValueEdit(const Synth::Model::Rect& rect, const std::string& str) override;
 
 // Implementation
 public:
@@ -53,6 +55,8 @@ public:
 
 protected:
 	static CSynthEditorView* _instance;
+	std::unique_ptr<EditCtrlDialog> _editCtrlDialog;
+	CFont _font, _smallFont;
 
 // Generated message map functions
 protected:
@@ -73,6 +77,9 @@ public:
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
 	afx_msg void OnToolsUploadMIDIFile();
+	afx_msg void OnEditCancel();
+	afx_msg void OnEditCommit();
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

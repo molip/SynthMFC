@@ -19,6 +19,8 @@
     <ClInclude Include="SynthEditorView.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="EditCtrlDialog.h" />
+    <ClInclude Include="Messages.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileView.cpp" />
@@ -31,6 +33,7 @@
     <ClCompile Include="SynthEditorDoc.cpp" />
     <ClCompile Include="SynthEditorView.cpp" />
     <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="EditCtrlDialog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SynthEditor.rc">

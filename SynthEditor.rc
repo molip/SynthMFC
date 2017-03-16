@@ -143,7 +143,7 @@ BEGIN
         MENUITEM "&Save\tCtrl+S",               ID_FILE_SAVE
         MENUITEM "Save &As...",                 ID_FILE_SAVE_AS
         MENUITEM SEPARATOR
-        MENUITEM "&Upload\tEnter",              ID_FILE_UPLOAD
+        MENUITEM "&Upload\tF5",                 ID_FILE_UPLOAD
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
         MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
@@ -265,7 +265,7 @@ BEGIN
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
     "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
-    VK_RETURN,      ID_FILE_UPLOAD,         VIRTKEY, NOINVERT
+    VK_F5,          ID_FILE_UPLOAD,         VIRTKEY, NOINVERT
     "2",            ID_INSERT_ENVELOPE,     VIRTKEY, CONTROL, NOINVERT
     "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
@@ -524,6 +524,37 @@ END
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_UK
 #pragma code_page(1252)
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_BLANK DIALOGEX 0, 0, 146, 95
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO
+BEGIN
+    IDD_BLANK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 139
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 88
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -564,6 +595,17 @@ BEGIN
 END
 
 #endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// AFX_DIALOG_LAYOUT
+//
+
+IDD_BLANK AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
 
 #endif    // English (United Kingdom) resources
 /////////////////////////////////////////////////////////////////////////////

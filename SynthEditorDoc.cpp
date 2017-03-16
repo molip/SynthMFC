@@ -33,6 +33,7 @@ CSynthEditorDoc::CSynthEditorDoc()
 
 CSynthEditorDoc::~CSynthEditorDoc()
 {
+	_controller->SetView(nullptr);
 }
 
 CSynthEditorDoc* CSynthEditorDoc::Instance()
