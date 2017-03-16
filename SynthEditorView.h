@@ -14,7 +14,7 @@ namespace Synth
 	}
 }
 
-class CSynthEditorView : public CView, private Synth::UI::View
+class CSynthEditorView : public CView, public Synth::UI::View
 {
 protected: // create from serialization only
 	CSynthEditorView();
@@ -25,7 +25,7 @@ public:
 	CSynthEditorDoc* GetDocument() const;
 	Synth::UI::Controller* GetController() const;
 
-	static CSynthEditorView* Instance();
+	static CSynthEditorView* Instance() { return _instance; }
 
 // Operations
 public:
@@ -52,6 +52,7 @@ public:
 #endif
 
 protected:
+	static CSynthEditorView* _instance;
 
 // Generated message map functions
 protected:
@@ -72,7 +73,6 @@ public:
 	afx_msg void OnEditRedo();
 	afx_msg void OnUpdateEditRedo(CCmdUI *pCmdUI);
 	afx_msg void OnToolsUploadMIDIFile();
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

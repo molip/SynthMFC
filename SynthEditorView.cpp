@@ -43,22 +43,19 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
-	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
-// CSynthEditorView construction/destruction
+CSynthEditorView* CSynthEditorView::_instance;
 
 CSynthEditorView::CSynthEditorView()
 {
+	KERNEL_ASSERT(!_instance);
+	_instance = this;
 }
 
 CSynthEditorView::~CSynthEditorView()
 {
-}
-
-CSynthEditorView* CSynthEditorView::Instance()
-{
-	return static_cast<CSynthEditorView*>(static_cast<CFrameWnd*>(::AfxGetMainWnd())->GetActiveView());
+	_instance = nullptr;
 }
 
 BOOL CSynthEditorView::PreCreateWindow(CREATESTRUCT& cs)
@@ -358,15 +355,4 @@ void CSynthEditorView::OnToolsUploadMIDIFile()
 			::AfxMessageBox(CString(e.what()), MB_ICONWARNING);
 		}
 	}
-}
-
-
-int CSynthEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
-{
-	if (__super::OnCreate(lpCreateStruct) == -1)
-		return -1;
-
-	GetDocument()->GetController().SetView(this);
-
-	return 0;
 }

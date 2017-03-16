@@ -10,6 +10,7 @@
 #endif
 
 #include "SynthEditorDoc.h"
+#include "SynthEditorView.h"
 
 #include "synth/libSynth/Controller.h"
 
@@ -28,7 +29,6 @@ END_MESSAGE_MAP()
 
 CSynthEditorDoc::CSynthEditorDoc()
 {
-	CreateController();
 }
 
 CSynthEditorDoc::~CSynthEditorDoc()
@@ -43,11 +43,11 @@ CSynthEditorDoc* CSynthEditorDoc::Instance()
 	return nullptr;
 }
 
-void CSynthEditorDoc::CreateController()
+std::unique_ptr<Synth::UI::Controller> CSynthEditorDoc::MakeController()
 {
-	Synth::UI::View* view = _controller ? _controller->GetView() : nullptr;
-	_controller = std::make_unique<Synth::UI::Controller>();
-	_controller->SetView(view);
+	std::unique_ptr<Synth::UI::Controller> controller = std::make_unique<Synth::UI::Controller>();
+	controller->SetView(CSynthEditorView::Instance());
+	return controller;
 }
 
 BOOL CSynthEditorDoc::OnNewDocument()
@@ -55,7 +55,7 @@ BOOL CSynthEditorDoc::OnNewDocument()
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	CreateController();
+	_controller = MakeController();
 
 	return TRUE;
 }
@@ -67,13 +67,11 @@ BOOL CSynthEditorDoc::OnSaveDocument(LPCTSTR lpszPathName)
 
 BOOL CSynthEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 {
-	Synth::UI::View* view = _controller ? _controller->GetView() : nullptr;
-	auto newController = std::make_unique<Synth::UI::Controller>();
+	auto newController = MakeController();
 	if (!newController->Load(lpszPathName))
 		return false;
 
 	_controller = std::move(newController);
-	_controller->SetView(view);
 	return true;
 }
 
