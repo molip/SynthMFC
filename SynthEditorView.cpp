@@ -245,6 +245,17 @@ void CSynthEditorView::StartValueEdit(const Synth::Model::Rect & rect, const std
 	_editCtrlDialog->Create(screenRect, CString(str.c_str()), _smallFont);
 }
 
+bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
+{
+	SerialPort serial;
+	if (serial.Open())
+	{
+		serial.Write(&buffer.front(), (DWORD)buffer.size());
+		return true;
+	}
+	return false;
+}
+
 void CSynthEditorView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
 	ClientToScreen(&point);
@@ -286,13 +297,7 @@ Synth::UI::Controller* CSynthEditorView::GetController() const
 
 void CSynthEditorView::OnFileUpload()
 {
-	SerialPort serial;
-	if (serial.Open())
-	{
-		auto buffer = GetController()->Export();
-		serial.Write(&buffer->front(), (DWORD)buffer->size());
-		serial.Close();
-	}
+	GetController()->Export();
 }
 
 void CSynthEditorView::OnInsertModule(UINT id)
@@ -357,10 +362,7 @@ void CSynthEditorView::OnToolsUploadMIDIFile()
 	{
 		try
 		{
-			auto buffer = GetController()->ExportMIDIFile(dlg.GetPathName().GetBuffer());
-			SerialPort serial;
-			if (serial.Open())
-				serial.Write(&buffer->front(), (DWORD)buffer->size());
+			GetController()->ExportMIDIFile(dlg.GetPathName().GetBuffer());
 		}
 		catch (Synth::Exception& e)
 		{

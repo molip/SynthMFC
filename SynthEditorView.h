@@ -41,9 +41,11 @@ protected:
 	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
+	// Synth::UI::View overrides.
 	virtual void InvalidateAll() override;
 	virtual void SetCapture(bool capture) override;
 	virtual void StartValueEdit(const Synth::Model::Rect& rect, const std::string& str) override;
+	virtual bool UploadData(const Synth::Buffer& buffer) override;
 
 // Implementation
 public:
