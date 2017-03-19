@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 namespace
@@ -60,6 +61,11 @@ namespace
 	CPoint MakeCPoint(const Synth::Model::Point& point)
 	{
 		return CPoint(point.x, point.y);
+	}
+
+	Synth::Model::Point MakePoint(const CPoint& point)
+	{
+		return Synth::Model::Point(point.x, point.y);
 	}
 }
 
@@ -322,17 +328,24 @@ void CSynthEditorView::OnUpdateDeleteModule(CCmdUI *pCmdUI)
 
 void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	GetController()->OnMouseMove(Synth::Model::Point(point.x, point.y));
+	GetController()->OnMouseMove(MakePoint(point));
 }
 
 void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	GetController()->OnLButtonDown(Synth::Model::Point(point.x, point.y));
+	GetController()->OnLButtonDown(MakePoint(point));
 }
 
 void CSynthEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	GetController()->OnLButtonUp(Synth::Model::Point(point.x, point.y));
+	GetController()->OnLButtonUp(MakePoint(point));
+}
+
+BOOL CSynthEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	ScreenToClient(&pt);
+	GetController()->OnMouseWheel(MakePoint(pt), zDelta < 0, nFlags & MK_CONTROL);
+	return true;
 }
 
 void CSynthEditorView::OnEditUndo()
