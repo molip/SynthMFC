@@ -179,6 +179,7 @@ BEGIN
         MENUITEM "Oscillator\tCtrl+3",          ID_INSERT_OSCILLATOR
         MENUITEM "PolyMixer\tCtrl+4",           ID_INSERT_POLYMIXER
         MENUITEM "Target\tCtrl+5",              ID_INSERT_TARGET
+        MENUITEM "Filter\tCtrl+6",              ID_INSERT_FILTER
     END
     POPUP "&Tools"
     BEGIN
@@ -274,6 +275,7 @@ BEGIN
     VK_F6,          ID_NEXT_PANE,           VIRTKEY, NOINVERT
     VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT, NOINVERT
     "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
+    "6",            ID_INSERT_FILTER,       VIRTKEY, CONTROL, NOINVERT
 END
 
 
@@ -511,6 +513,7 @@ STRINGTABLE
 BEGIN
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
+    ID_INSERT_FILTER        "Insert Filter module"
 END
 
 #endif    // English (United States) resources
