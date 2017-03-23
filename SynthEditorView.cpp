@@ -262,6 +262,11 @@ bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
 	return false;
 }
 
+void CSynthEditorView::SetModified(bool modified)
+{
+	GetDocument()->SetModifiedFlag(modified);
+}
+
 void CSynthEditorView::OnRButtonUp(UINT /* nFlags */, CPoint point)
 {
 	ClientToScreen(&point);

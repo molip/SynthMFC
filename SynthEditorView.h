@@ -46,6 +46,7 @@ protected:
 	virtual void SetCapture(bool capture) override;
 	virtual void StartValueEdit(const Synth::Model::Rect& rect, const std::string& str) override;
 	virtual bool UploadData(const Synth::Buffer& buffer) override;
+	virtual void SetModified(bool modified) override;
 
 // Implementation
 public:
