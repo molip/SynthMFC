@@ -68,6 +68,7 @@
 #define ID_INSERT_FILTER                32780
 #define ID_INSERT_RANGE                 32781
 #define ID_INSERT_MIXER                 32782
+#define ID_INSERT_PITCHSHIFT            32783
 #define ID_EDIT_DELETE                  32785
 #define ID_TOOLS_UPLOADMIDIFILE         32788
 
