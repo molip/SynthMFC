@@ -84,6 +84,7 @@ public:
 	afx_msg void OnEditCommit();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+	afx_msg void OnToolsStopMIDI();
 };
 
 #ifndef _DEBUG  // debug version in SynthEditorView.cpp

@@ -183,10 +183,11 @@ BEGIN
         MENUITEM "Range\tCtrl+7",               ID_INSERT_RANGE
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
         MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
-	END
+    END
     POPUP "&Tools"
     BEGIN
         MENUITEM "&Upload MIDI File...",        ID_TOOLS_UPLOADMIDIFILE
+        MENUITEM "&Stop MIDI",                  ID_TOOLS_STOPMIDI
     END
     POPUP "&Help"
     BEGIN
@@ -513,6 +514,8 @@ BEGIN
     ID_INSERT_OSCILLATOR    "Insert Oscillator module"
     ID_INSERT_POLYMIXER     "Insert PolyMixer module"
     ID_INSERT_TARGET        "Insert Target module"
+    ID_INSERT_FILTER        "Insert Filter module"
+    ID_INSERT_RANGE         "Insert Range module"
     ID_INSERT_MIXER         "Insert Mixer module"
     ID_INSERT_PITCHSHIFT    "Insert PitchShift module"
 END
@@ -521,8 +524,7 @@ STRINGTABLE
 BEGIN
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
-    ID_INSERT_FILTER        "Insert Filter module"
-    ID_INSERT_RANGE         "Insert Range module"
+    ID_TOOLS_STOPMIDI       "Stop currently playing MIDI file"
 END
 
 #endif    // English (United States) resources

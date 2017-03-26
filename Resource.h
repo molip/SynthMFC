@@ -71,13 +71,14 @@
 #define ID_INSERT_PITCHSHIFT            32783
 #define ID_EDIT_DELETE                  32785
 #define ID_TOOLS_UPLOADMIDIFILE         32788
+#define ID_TOOLS_STOPMIDI               32794
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
-#define _APS_NEXT_COMMAND_VALUE         32794
+#define _APS_NEXT_COMMAND_VALUE         32795
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

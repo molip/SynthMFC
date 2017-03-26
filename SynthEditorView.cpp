@@ -48,6 +48,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
+	ON_COMMAND(ID_TOOLS_STOPMIDI, &CSynthEditorView::OnToolsStopMIDI)
 	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
@@ -404,4 +405,10 @@ void CSynthEditorView::OnEditCommit()
 BOOL CSynthEditorView::PreTranslateMessage(MSG* pMsg)
 {
 	return __super::PreTranslateMessage(pMsg);
+}
+
+
+void CSynthEditorView::OnToolsStopMIDI()
+{
+	GetController()->StopMIDIFilePlayback();
 }
