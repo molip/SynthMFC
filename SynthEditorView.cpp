@@ -44,7 +44,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CSynthEditorView::OnUpdateEditUndo)
 	ON_COMMAND(ID_EDIT_REDO, &CSynthEditorView::OnEditRedo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, &CSynthEditorView::OnUpdateEditRedo)
-	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_PITCHSHIFT, &CSynthEditorView::OnInsertModule)
+	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_LFO, &CSynthEditorView::OnInsertModule)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
@@ -315,7 +315,7 @@ void CSynthEditorView::OnFileUpload()
 void CSynthEditorView::OnInsertModule(UINT id)
 {
 	int index = id - ID_INSERT_MIDI;
-	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "rang", "mixr", "pitc" };
+	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "rang", "mixr", "pitc", "lfo" };
 	if (index >= 0 && index < types.size())
 	{
 		GetController()->InsertModule(*(types.begin() + index));

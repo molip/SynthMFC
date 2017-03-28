@@ -183,6 +183,7 @@ BEGIN
         MENUITEM "Range\tCtrl+7",               ID_INSERT_RANGE
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
         MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
+        MENUITEM "LFO\tCtrl+0",			        ID_INSERT_LFO
     END
     POPUP "&Tools"
     BEGIN
@@ -275,6 +276,7 @@ BEGIN
     "6",            ID_INSERT_FILTER,       VIRTKEY, CONTROL, NOINVERT
     "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
     "8",            ID_INSERT_MIXER,        VIRTKEY, CONTROL, NOINVERT
+    "0",            ID_INSERT_LFO,          VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
     "9",            ID_INSERT_PITCHSHIFT,   VIRTKEY, CONTROL, NOINVERT
     "4",            ID_INSERT_POLYMIXER,    VIRTKEY, CONTROL, NOINVERT
@@ -518,6 +520,7 @@ BEGIN
     ID_INSERT_RANGE         "Insert Range module"
     ID_INSERT_MIXER         "Insert Mixer module"
     ID_INSERT_PITCHSHIFT    "Insert PitchShift module"
+    ID_INSERT_LFO           "Insert LFO module"
 END
 
 STRINGTABLE
