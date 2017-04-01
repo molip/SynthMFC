@@ -75,8 +75,7 @@ BOOL CSynthEditorApp::InitInstance()
 	// TODO: You should modify this string to be something appropriate
 	// such as the name of your company or organization
 	SetRegistryKey(_T("Local AppWizard-Generated Applications"));
-	LoadStdProfileSettings(4);  // Load standard INI file options (including MRU)
-
+	LoadStdProfileSettings(16);  // Load standard INI file options (including MRU)
 
 	InitContextMenuManager();
 

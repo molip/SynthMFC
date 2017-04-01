@@ -183,7 +183,7 @@ BEGIN
         MENUITEM "Range\tCtrl+7",               ID_INSERT_RANGE
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
         MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
-        MENUITEM "LFO\tCtrl+0",			        ID_INSERT_LFO
+        MENUITEM "LFO\tCtrl+0",                 ID_INSERT_LFO
     END
     POPUP "&Tools"
     BEGIN
@@ -370,7 +370,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDR_MAINFRAME           "SynthEditor\n\nSynthEditor\n\n\nSynthEditor.Document\nSynthEditor.Document"
+    IDR_MAINFRAME           "SynthEditor\n\nSynthEditor\nPatches\n.synth\nSynthEditor.Document\nSynthEditor.Document"
 END
 
 STRINGTABLE
@@ -520,11 +520,11 @@ BEGIN
     ID_INSERT_RANGE         "Insert Range module"
     ID_INSERT_MIXER         "Insert Mixer module"
     ID_INSERT_PITCHSHIFT    "Insert PitchShift module"
-    ID_INSERT_LFO           "Insert LFO module"
 END
 
 STRINGTABLE
 BEGIN
+    ID_INSERT_LFO           "Insert LFO module"
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
     ID_TOOLS_STOPMIDI       "Stop currently playing MIDI file"
