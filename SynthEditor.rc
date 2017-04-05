@@ -184,6 +184,7 @@ BEGIN
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
         MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
         MENUITEM "LFO\tCtrl+0",                 ID_INSERT_LFO
+        MENUITEM "Delay\tCtrl+0",               ID_INSERT_DELAY
     END
     POPUP "&Tools"
     BEGIN
@@ -525,6 +526,7 @@ END
 STRINGTABLE
 BEGIN
     ID_INSERT_LFO           "Insert LFO module"
+    ID_INSERT_DELAY         "Insert Delay module"
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
     ID_TOOLS_STOPMIDI       "Stop currently playing MIDI file"

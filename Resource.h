@@ -70,7 +70,8 @@
 #define ID_INSERT_MIXER                 32782
 #define ID_INSERT_PITCHSHIFT            32783
 #define ID_INSERT_LFO                   32784
-#define ID_EDIT_DELETE                  32785
+#define ID_INSERT_DELAY                 32785
+#define ID_EDIT_DELETE                  32786
 #define ID_TOOLS_UPLOADMIDIFILE         32788
 #define ID_TOOLS_STOPMIDI               32794
 
