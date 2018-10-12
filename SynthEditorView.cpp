@@ -15,6 +15,7 @@
 #include "Resource.h"
 #include "EditCtrlDialog.h"
 #include "Messages.h"
+#include "MemoryDC.h"
 
 #include "synth/libSynth/Controller.h"
 #include "synth/libKernel/Debug.h"
@@ -51,6 +52,8 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
 	ON_COMMAND(ID_TOOLS_STOPMIDI, &CSynthEditorView::OnToolsStopMIDI)
 	ON_WM_MOUSEWHEEL()
+	ON_WM_PAINT()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 namespace
@@ -103,8 +106,13 @@ BOOL CSynthEditorView::PreCreateWindow(CREATESTRUCT& cs)
 
 // CSynthEditorView drawing
 
-void CSynthEditorView::OnDraw(CDC* dc)
+void CSynthEditorView::OnPaint()
 {
+	MemoryDC memDC(*this);
+	memDC.FillSolidRect(memDC.GetRect(), 0xffffff);
+
+	CDC* dc = &memDC;
+
 	CPen blackPen(PS_SOLID, 1, RGB(0, 0, 0));
 	CPen bluePen(PS_SOLID, 1, RGB(0, 0, 255));
 	CPen redPen(PS_SOLID, 1, RGB(255, 0, 0));
@@ -202,7 +210,10 @@ void CSynthEditorView::OnDraw(CDC* dc)
 		DrawConnection(conn);
 }
 
-
+BOOL CSynthEditorView::OnEraseBkgnd(CDC*)
+{
+	return true;
+}
 // CSynthEditorView printing
 
 

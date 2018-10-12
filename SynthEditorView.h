@@ -34,7 +34,7 @@ public:
 
 // Overrides
 public:
-	virtual void OnDraw(CDC* pDC);  // overridden to draw this view
+	virtual void OnDraw(CDC* pDC) {}
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
@@ -68,6 +68,8 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
+	afx_msg void OnPaint();
+	afx_msg BOOL OnEraseBkgnd(CDC*);
 	afx_msg void OnFileUpload();
 	afx_msg void OnFileTest();
 	afx_msg void OnInsertModule(UINT id);
