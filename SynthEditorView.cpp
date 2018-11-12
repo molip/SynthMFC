@@ -260,6 +260,9 @@ bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
 		serial.Write(&buffer.front(), (DWORD)buffer.size());
 		return true;
 	}
+	else 
+		AfxMessageBox(L"Serial open failed");
+
 	return false;
 }
 

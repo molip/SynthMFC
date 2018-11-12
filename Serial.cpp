@@ -19,7 +19,7 @@ SerialPort::~SerialPort()
 
 std::wstring SerialPort::FindPortName() const
 {
-	return L"COM6";
+	return L"COM7";
 
 	//WCHAR devs[1 << 16];
 	//DWORD chars = ::QueryDosDevice(nullptr, devs, 1 << 16);
@@ -43,10 +43,9 @@ bool SerialPort::Open()
 	std::wstring portName = _portName.empty() ? FindPortName() : _portName;
 	path += portName;
 		
-	HANDLE file = CreateFile(path.c_str(), GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+	HANDLE file = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
 	if (!file || file == INVALID_HANDLE_VALUE)
 	{
-		AfxMessageBox(L"CreateFile failed");
 		return false;
 	}
 	DCB dcb;
@@ -67,9 +66,9 @@ bool SerialPort::Open()
 		return false;
 	}
 
-	timeouts.ReadIntervalTimeout = 1;
-	timeouts.ReadTotalTimeoutConstant = 1;
-	timeouts.ReadTotalTimeoutMultiplier = 1;
+	timeouts.ReadIntervalTimeout = MAXDWORD;
+	timeouts.ReadTotalTimeoutConstant = 0;
+	timeouts.ReadTotalTimeoutMultiplier = 0;
 
 	if (!SetCommTimeouts(file, &timeouts))
 	{
@@ -98,11 +97,11 @@ bool SerialPort::Close()
 	return true;
 }
 
-void SerialPort::Read()
+int SerialPort::Read()
 {
 	DWORD bytesRead = 0;
-	byte buffer;
-	ReadFile(_file, &buffer, 1, &bytesRead, nullptr);
+	ReadFile(_file, _buffer, BufferSize, &bytesRead, nullptr);
+	return bytesRead;
 }
 
 bool SerialPort::Write(const byte* data, DWORD bytes) 

@@ -4,6 +4,7 @@
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
+#include "Serial.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -25,6 +26,7 @@ COutputWnd::~COutputWnd()
 BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -61,8 +63,7 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wndTabs.AddTab(&m_wndOutputBuild, strTabName, (UINT)0);
 
-	// Fill output tabs with some dummy text (nothing magic here)
-	FillBuildWindow();
+	SetTimer(1, 1000, nullptr);
 
 	return 0;
 }
@@ -87,15 +88,11 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 		CString strItem;
 		wndListBox.GetText(i, strItem);
 
-		cxExtentMax = max(cxExtentMax, (int)dc.GetTextExtent(strItem).cx);
+		cxExtentMax = std::max(cxExtentMax, (int)dc.GetTextExtent(strItem).cx);
 	}
 
 	wndListBox.SetHorizontalExtent(cxExtentMax);
 	dc.SelectObject(pOldFont);
-}
-
-void COutputWnd::FillBuildWindow()
-{
 }
 
 void COutputWnd::UpdateFonts()
@@ -166,5 +163,32 @@ void COutputList::OnViewOutput()
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
 
+	}
+}
+
+
+void COutputWnd::OnTimer(UINT_PTR nIDEvent)
+{
+	SerialPort serial;
+	if (serial.Open())
+	{
+		if (int length = serial.Read())
+		{
+			const byte* data = serial.GetBuffer();
+			CString s(reinterpret_cast<const char*>(data), length);
+			s.Remove(L'\r');
+			int start = 0, end = 0;
+			while (true)
+			{
+				end = s.Find(L'\n', start);
+				CString line = s.Mid(start, end - start);
+				if (line.IsEmpty())
+					break;
+				m_wndOutputBuild.AddString(line);
+				start = end + 1;
+			}
+			
+			m_wndOutputBuild.SetTopIndex(m_wndOutputBuild.GetCount() - 1);
+		}
 	}
 }

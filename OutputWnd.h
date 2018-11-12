@@ -38,8 +38,6 @@ protected:
 	COutputList m_wndOutputBuild;
 
 protected:
-	void FillBuildWindow();
-
 	void AdjustHorzScroll(CListBox& wndListBox);
 
 // Implementation
@@ -51,5 +49,7 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
