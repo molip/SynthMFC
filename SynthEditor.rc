@@ -184,7 +184,8 @@ BEGIN
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
         MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
         MENUITEM "LFO\tCtrl+0",                 ID_INSERT_LFO
-        MENUITEM "Delay\tCtrl+0",               ID_INSERT_DELAY
+        MENUITEM "Delay",                       ID_INSERT_DELAY
+        MENUITEM "Arpeggiator",                 ID_INSERT_ARPEGGIATOR
     END
     POPUP "&Tools"
     BEGIN
@@ -275,9 +276,9 @@ BEGIN
     VK_F5,          ID_FILE_UPLOAD,         VIRTKEY, NOINVERT
     "2",            ID_INSERT_ENVELOPE,     VIRTKEY, CONTROL, NOINVERT
     "6",            ID_INSERT_FILTER,       VIRTKEY, CONTROL, NOINVERT
+    "0",            ID_INSERT_LFO,          VIRTKEY, CONTROL, NOINVERT
     "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
     "8",            ID_INSERT_MIXER,        VIRTKEY, CONTROL, NOINVERT
-    "0",            ID_INSERT_LFO,          VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
     "9",            ID_INSERT_PITCHSHIFT,   VIRTKEY, CONTROL, NOINVERT
     "4",            ID_INSERT_POLYMIXER,    VIRTKEY, CONTROL, NOINVERT
@@ -527,6 +528,11 @@ STRINGTABLE
 BEGIN
     ID_INSERT_LFO           "Insert LFO module"
     ID_INSERT_DELAY         "Insert Delay module"
+    ID_INSERT_ARPEGGIATOR   "Insert Arpeggiator module"
+END
+
+STRINGTABLE
+BEGIN
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
     ID_TOOLS_STOPMIDI       "Stop currently playing MIDI file"
