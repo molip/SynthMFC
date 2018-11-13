@@ -35,6 +35,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CSynthEditorView::OnFilePrintPreview)
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_FILE_UPLOAD, &CSynthEditorView::OnFileUpload)
+	ON_COMMAND(ID_FILE_TEST, &CSynthEditorView::OnFileTest)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
@@ -313,6 +314,10 @@ Synth::UI::Controller* CSynthEditorView::GetController() const
 void CSynthEditorView::OnFileUpload()
 {
 	GetController()->Export();
+}
+void CSynthEditorView::OnFileTest()
+{
+	GetController()->TestGraph();
 }
 
 void CSynthEditorView::OnInsertModule(UINT id)

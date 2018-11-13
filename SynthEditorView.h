@@ -69,6 +69,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnFileUpload();
+	afx_msg void OnFileTest();
 	afx_msg void OnInsertModule(UINT id);
 	afx_msg void OnDeleteModule();
 	afx_msg void OnUpdateDeleteModule(CCmdUI *pCmdUI);
