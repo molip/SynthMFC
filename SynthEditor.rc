@@ -145,6 +145,7 @@ BEGIN
         MENUITEM SEPARATOR
         MENUITEM "&Upload\tF5",                 ID_FILE_UPLOAD
         MENUITEM "&Test\tF6",                   ID_FILE_TEST
+        MENUITEM "&Poly Test\tF7",              ID_FILE_POLYTEST
         MENUITEM SEPARATOR
         MENUITEM "&Print...\tCtrl+P",           ID_FILE_PRINT
         MENUITEM "Print Pre&view",              ID_FILE_PRINT_PREVIEW
@@ -272,6 +273,7 @@ BEGIN
     "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL, NOINVERT
     "N",            ID_FILE_NEW,            VIRTKEY, CONTROL, NOINVERT
     "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL, NOINVERT
+    VK_F7,          ID_FILE_POLYTEST,       VIRTKEY, NOINVERT
     "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL, NOINVERT
     "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL, NOINVERT
     VK_F6,          ID_FILE_TEST,           VIRTKEY, NOINVERT
@@ -529,6 +531,7 @@ BEGIN
     ID_INSERT_LFO           "Insert LFO module"
     ID_INSERT_DELAY         "Insert Delay module"
     ID_INSERT_ARPEGGIATOR   "Insert Arpeggiator module"
+    ID_FILE_POLYTEST        "Poly Test"
 END
 
 STRINGTABLE
