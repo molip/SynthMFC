@@ -71,6 +71,7 @@
 #define ID_INSERT_LFO                   32784
 #define ID_INSERT_DELAY                 32785
 #define ID_INSERT_ARPEGGIATOR           32786
+#define ID_INSERT_MULTIPLY              32787
 #define ID_FILE_TEST                    32795
 #define ID_FILE_POLYTEST                32797
 #define ID_EDIT_DELETE                  32800
