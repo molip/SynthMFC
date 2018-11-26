@@ -66,9 +66,8 @@
 #define ID_INSERT_POLYMIXER             32778
 #define ID_INSERT_TARGET                32779
 #define ID_INSERT_FILTER                32780
-#define ID_INSERT_RANGE                 32781
+#define ID_INSERT_MATHS                 32781
 #define ID_INSERT_MIXER                 32782
-#define ID_INSERT_PITCHSHIFT            32783
 #define ID_INSERT_LFO                   32784
 #define ID_INSERT_DELAY                 32785
 #define ID_INSERT_ARPEGGIATOR           32786

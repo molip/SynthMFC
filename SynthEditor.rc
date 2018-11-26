@@ -182,9 +182,8 @@ BEGIN
         MENUITEM "PolyMixer\tCtrl+4",           ID_INSERT_POLYMIXER
         MENUITEM "Target\tCtrl+5",              ID_INSERT_TARGET
         MENUITEM "Filter\tCtrl+6",              ID_INSERT_FILTER
-        MENUITEM "Range\tCtrl+7",               ID_INSERT_RANGE
+        MENUITEM "Maths\tCtrl+7",               ID_INSERT_MATHS
         MENUITEM "Mixer\tCtrl+8",               ID_INSERT_MIXER
-        MENUITEM "PitchShift\tCtrl+9",          ID_INSERT_PITCHSHIFT
         MENUITEM "LFO\tCtrl+0",                 ID_INSERT_LFO
         MENUITEM "Delay",                       ID_INSERT_DELAY
         MENUITEM "Arpeggiator",                 ID_INSERT_ARPEGGIATOR
@@ -284,9 +283,8 @@ BEGIN
     "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
     "8",            ID_INSERT_MIXER,        VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
-    "9",            ID_INSERT_PITCHSHIFT,   VIRTKEY, CONTROL, NOINVERT
     "4",            ID_INSERT_POLYMIXER,    VIRTKEY, CONTROL, NOINVERT
-    "7",            ID_INSERT_RANGE,        VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_INSERT_MATHS,        VIRTKEY, CONTROL, NOINVERT
     "5",            ID_INSERT_TARGET,       VIRTKEY, CONTROL, NOINVERT
     "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
 END
@@ -521,9 +519,8 @@ BEGIN
     ID_INSERT_POLYMIXER     "Insert PolyMixer module"
     ID_INSERT_TARGET        "Insert Target module"
     ID_INSERT_FILTER        "Insert Filter module"
-    ID_INSERT_RANGE         "Insert Range module"
+    ID_INSERT_MATHS         "Insert Maths module"
     ID_INSERT_MIXER         "Insert Mixer module"
-    ID_INSERT_PITCHSHIFT    "Insert PitchShift module"
 END
 
 STRINGTABLE

@@ -347,7 +347,7 @@ void CSynthEditorView::OnFilePolyTest()
 void CSynthEditorView::OnInsertModule(UINT id)
 {
 	int index = id - ID_INSERT_MIDI;
-	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "rang", "mixr", "pitc", "lfo", "dely", "arpe" };
+	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "math", "mixr", "pitc", "lfo", "dely", "arpe" };
 	if (index >= 0 && index < types.size())
 	{
 		GetController()->InsertModule(*(types.begin() + index));
