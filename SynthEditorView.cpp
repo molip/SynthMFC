@@ -142,14 +142,20 @@ void CSynthEditorView::OnPaint()
 		labelRect.left += 2;
 		dc->DrawText(CString(pin.name.c_str()), labelRect, DT_VCENTER | DT_SINGLELINE);
 
-		if (pin.showValue)
+		auto DrawValue = [&](const Synth::Model::Rect& rect, const std::string& str)
 		{
 			dc->SelectStockObject(BLACK_PEN);
-			CRect valueRect = MakeCRect(pin.valueRect);
+			CRect valueRect = MakeCRect(rect);
 			dc->Rectangle(valueRect);
 			valueRect.right -= 2;
-			dc->DrawText(CString(pin.value.c_str()), valueRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
-		}
+			dc->DrawText(CString(str.c_str()), valueRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+		};
+
+		if (pin.showOffset)
+			DrawValue(pin.offsetRect, pin.offset);
+
+		if (pin.showScale)
+			DrawValue(pin.scaleRect, pin.scale);
 	};
 
 	if (!GetController())
