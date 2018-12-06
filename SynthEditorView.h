@@ -6,6 +6,8 @@
 
 #include "synth/libSynth/View.h"
 
+#include "Serial.h"
+
 namespace Synth
 {
 	namespace UI
@@ -15,6 +17,7 @@ namespace Synth
 }
 
 class EditCtrlDialog;
+class CSynthEditorDoc;
 
 class CSynthEditorView : public CView, public Synth::UI::View
 {
@@ -26,6 +29,7 @@ protected: // create from serialization only
 public:
 	CSynthEditorDoc* GetDocument() const;
 	Synth::UI::Controller* GetController() const;
+	SerialPort& GetSerial() { return _serial; }
 
 	static CSynthEditorView* Instance() { return _instance; }
 
@@ -60,6 +64,7 @@ protected:
 	static CSynthEditorView* _instance;
 	std::unique_ptr<EditCtrlDialog> _editCtrlDialog;
 	CFont _font, _smallFont;
+	SerialPort _serial;
 
 // Generated message map functions
 protected:

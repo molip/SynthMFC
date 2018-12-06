@@ -37,7 +37,7 @@ std::wstring SerialPort::FindPortName() const
 bool SerialPort::Open()
 {
 	if (_file)
-		return false;
+		return true;
 
 	std::wstring path = L"\\\\.\\";
 	std::wstring portName = _portName.empty() ? FindPortName() : _portName;

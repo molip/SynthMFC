@@ -89,7 +89,6 @@ CSynthEditorView::CSynthEditorView()
 	lf.lfHeight = long(lf.lfHeight * 0.7);
 
 	_smallFont.CreateFontIndirect(&lf);
-
 }
 
 CSynthEditorView::~CSynthEditorView()
@@ -273,14 +272,13 @@ void CSynthEditorView::StartValueEdit(const Synth::Model::Rect & rect, const std
 
 bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
 {
-	SerialPort serial;
-	if (serial.Open())
+	if (_serial.Open())
 	{
-		serial.Write(&buffer.front(), (DWORD)buffer.size());
+		_serial.Write(&buffer.front(), (DWORD)buffer.size());
 		return true;
 	}
 	else 
-		AfxMessageBox(L"Serial open failed");
+		AfxMessageBox(L"Serial port not open");
 
 	return false;
 }

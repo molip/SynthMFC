@@ -4,7 +4,7 @@
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
-#include "Serial.h"
+#include "SynthEditorView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -169,7 +169,12 @@ void COutputList::OnViewOutput()
 
 void COutputWnd::OnTimer(UINT_PTR nIDEvent)
 {
-	SerialPort serial;
+	CSynthEditorView* view = CSynthEditorView::Instance();
+	if (!view)
+		return;
+
+	SerialPort& serial = view->GetSerial();
+
 	if (serial.Open())
 	{
 		if (int length = serial.Read())
