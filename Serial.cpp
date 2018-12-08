@@ -1,7 +1,10 @@
 #include "stdafx.h"
 #include "Serial.h"
 
+#include "synth/libKernel/Debug.h"
+
 #include <algorithm>
+#include <thread>
 
 namespace
 {
@@ -14,6 +17,11 @@ SerialPort::SerialPort() : _file(nullptr)
 
 SerialPort::~SerialPort()
 {
+	_abort = true;
+	
+	if (_thread.joinable())
+		_thread.join();
+
 	Close();
 }
 
@@ -42,8 +50,9 @@ bool SerialPort::Open()
 	std::wstring path = L"\\\\.\\";
 	std::wstring portName = _portName.empty() ? FindPortName() : _portName;
 	path += portName;
-		
-	HANDLE file = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, 0, nullptr);
+	
+	// FILE_FLAG_OVERLAPPED means reading doesn't block writing. 
+	HANDLE file = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 0, nullptr, OPEN_EXISTING, FILE_FLAG_OVERLAPPED, nullptr);
 	if (!file || file == INVALID_HANDLE_VALUE)
 	{
 		return false;
@@ -66,7 +75,8 @@ bool SerialPort::Open()
 		return false;
 	}
 
-	timeouts.ReadIntervalTimeout = MAXDWORD;
+	// No timeout - reading blocks until data available.
+	timeouts.ReadIntervalTimeout = 0;
 	timeouts.ReadTotalTimeoutConstant = 0;
 	timeouts.ReadTotalTimeoutMultiplier = 0;
 
@@ -78,6 +88,11 @@ bool SerialPort::Open()
 
 	_file = file;
 	_portName = portName;
+
+	if (_thread.joinable())
+		_thread.join();
+
+	_thread = std::thread(&SerialPort::Go, this);
 
 	return true;
 }
@@ -97,17 +112,47 @@ bool SerialPort::Close()
 	return true;
 }
 
-int SerialPort::Read()
+void SerialPort::Go()
 {
-	DWORD bytesRead = 0;
-	ReadFile(_file, _buffer, BufferSize, &bytesRead, nullptr);
-	return bytesRead;
+	while (!_abort)
+	{
+
+		const int BufferSize = 1;
+		char buffer[BufferSize];
+		DWORD bytesRead = 0;
+		OVERLAPPED overlapped{}; // Needed for FILE_FLAG_OVERLAPPED mode.
+		if (!ReadFile(_file, buffer, BufferSize, &bytesRead, &overlapped))
+			if (!GetOverlappedResult(_file, &overlapped, &bytesRead, true))
+			{	
+				int a = 0;
+				_file = nullptr;
+				return;
+			}
+
+		if (bytesRead)
+		{
+			std::lock_guard<std::mutex> lk(_mutex);
+			_input.append(buffer, bytesRead);
+		}
+	}
+}
+
+std::string SerialPort::HarvestInput()
+{
+	std::string result;
+	if (!_input.empty())
+	{
+		std::lock_guard<std::mutex> lk(_mutex);
+		result = std::move(_input);
+	}
+	return result;
 }
 
 bool SerialPort::Write(const byte* data, DWORD bytes) 
 {
 	DWORD bytesRead = 0;
-	WriteFile(_file, data, bytes, &bytesRead, nullptr);
+	OVERLAPPED overlapped{}; // Needed for FILE_FLAG_OVERLAPPED mode.
+	WriteFile(_file, data, bytes, &bytesRead, &overlapped);
 	return bytesRead == bytes;
 }
 

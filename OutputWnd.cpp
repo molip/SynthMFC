@@ -177,10 +177,10 @@ void COutputWnd::OnTimer(UINT_PTR nIDEvent)
 
 	if (serial.Open())
 	{
-		if (int length = serial.Read())
+		const std::string input = serial.HarvestInput();
+		if (!input.empty())
 		{
-			const byte* data = serial.GetBuffer();
-			CString s(reinterpret_cast<const char*>(data), length);
+			CString s(input.c_str());
 			s.Remove(L'\r');
 			int start = 0, end = 0;
 			while (true)

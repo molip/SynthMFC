@@ -21,16 +21,18 @@ public:
 	std::wstring GetPortName() const { return _portName; }
 
 	bool Write(const byte* data, DWORD bytes);
-	int Read();
-
-	const byte* GetBuffer() const { return _buffer; }
+	std::string HarvestInput();
 
 private:
 	std::wstring FindPortName() const;
+	void Go();
 
 	HANDLE _file;
 	std::wstring _portName;
 
-	static const int BufferSize = 1024;
-	byte _buffer[BufferSize];
+	std::string _input;
+
+	std::thread _thread;
+	std::mutex _mutex;
+	bool _abort = false;
 };
