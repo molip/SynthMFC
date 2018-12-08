@@ -76,7 +76,6 @@ public:
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC*);
 	afx_msg void OnFileUpload();
-	afx_msg void OnFileTest();
 	afx_msg void OnFilePolyTest();
 	afx_msg void OnInsertModule(UINT id);
 	afx_msg void OnDeleteModule();
