@@ -157,6 +157,9 @@
     <ProjectReference Include="synth\libSynth\libSynth.vcxproj">
       <Project>{4f3d3367-90dc-4aa7-bc64-1a873c5d0bb9}</Project>
     </ProjectReference>
+    <ProjectReference Include="synth\libWinPlayer\libWinPlayer.vcxproj">
+      <Project>{bd7143cf-03a4-49e5-b0b8-0c018537aa42}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

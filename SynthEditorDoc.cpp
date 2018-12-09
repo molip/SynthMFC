@@ -13,6 +13,7 @@
 #include "SynthEditorView.h"
 
 #include "synth/libSynth/Controller.h"
+#include "synth/libWinPlayer/WinPlayer.h"
 
 #include <propkey.h>
 
@@ -29,11 +30,13 @@ END_MESSAGE_MAP()
 
 CSynthEditorDoc::CSynthEditorDoc()
 {
+	_player = std::make_unique<WinPlayer>();
 }
 
 CSynthEditorDoc::~CSynthEditorDoc()
 {
 	_controller->SetView(nullptr);
+	_controller->SetPlayer(nullptr);
 }
 
 CSynthEditorDoc* CSynthEditorDoc::Instance()
@@ -48,6 +51,7 @@ std::unique_ptr<Synth::UI::Controller> CSynthEditorDoc::MakeController()
 {
 	std::unique_ptr<Synth::UI::Controller> controller = std::make_unique<Synth::UI::Controller>();
 	controller->SetView(CSynthEditorView::Instance());
+	controller->SetPlayer(_player.get());
 	return controller;
 }
 

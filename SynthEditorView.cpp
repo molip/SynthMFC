@@ -276,8 +276,6 @@ bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
 		_serial.Write(&buffer.front(), (DWORD)buffer.size());
 		return true;
 	}
-	else 
-		AfxMessageBox(L"Serial port not open");
 
 	return false;
 }

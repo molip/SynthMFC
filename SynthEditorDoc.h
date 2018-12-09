@@ -10,6 +10,8 @@ namespace Synth
 	}
 }
 
+class WinPlayer;
+
 class CSynthEditorDoc : public CDocument
 {
 protected: // create from serialization only
@@ -25,6 +27,7 @@ private:
 	std::unique_ptr<Synth::UI::Controller> MakeController();
 
 	std::unique_ptr<Synth::UI::Controller> _controller;
+	std::unique_ptr<WinPlayer> _player;
 
 // Overrides
 public:
