@@ -53,6 +53,8 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;      // fail to create
 	}
 
+	m_waveformWnd.Create(this);
+
 	UpdateFonts();
 
 	CString strTabName;
@@ -71,9 +73,10 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void COutputWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
+	const int waveformWidth = 400;
+	m_wndTabs.SetWindowPos (NULL, -1, -1, cx - waveformWidth, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 
-	// Tab control should cover the whole client area:
-	m_wndTabs.SetWindowPos (NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+	m_waveformWnd.MoveWindow(cx - waveformWidth, 0, waveformWidth, cy);
 }
 
 void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)

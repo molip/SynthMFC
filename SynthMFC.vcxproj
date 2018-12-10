@@ -114,6 +114,7 @@
     <ClInclude Include="SynthEditorView.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="WaveformWnd.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EditCtrlDialog.cpp" />
@@ -131,6 +132,7 @@
     <ClCompile Include="SynthEditorDoc.cpp" />
     <ClCompile Include="SynthEditorView.cpp" />
     <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="WaveformWnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SynthEditor.rc" />

@@ -1,6 +1,8 @@
 
 #pragma once
 
+#include "WaveformWnd.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // COutputList window
 
@@ -36,6 +38,7 @@ protected:
 	CMFCTabCtrl	m_wndTabs;
 
 	COutputList m_wndOutputBuild;
+	WaveformWnd m_waveformWnd;
 
 protected:
 	void AdjustHorzScroll(CListBox& wndListBox);
