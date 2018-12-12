@@ -54,6 +54,8 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_WM_ERASEBKGND()
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 namespace
@@ -374,6 +376,18 @@ BOOL CSynthEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	ScreenToClient(&pt);
 	GetController()->OnMouseWheel(MakePoint(pt), zDelta < 0, nFlags & MK_CONTROL);
 	return true;
+}
+
+void CSynthEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if ((::GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0)
+		GetController()->OnKeyDown(nChar);
+}
+
+void CSynthEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	if ((::GetAsyncKeyState(VK_CONTROL) & 0x8000) == 0)
+		GetController()->OnKeyUp(nChar);
 }
 
 void CSynthEditorView::OnEditUndo()

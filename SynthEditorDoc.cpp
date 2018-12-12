@@ -21,6 +21,14 @@
 #define new DEBUG_NEW
 #endif
 
+namespace
+{
+	const std::vector<uint8_t> MIDIKeys =
+	{
+		'Z', 'S', 'X', 'D', 'C', 'V', 'G', 'B', 'H', 'N', 'J', 'M', VK_OEM_COMMA, 'L', VK_OEM_PERIOD, VK_OEM_1, VK_OEM_2
+	};
+}
+
 // CSynthEditorDoc
 
 IMPLEMENT_DYNCREATE(CSynthEditorDoc, CDocument)
@@ -49,7 +57,7 @@ CSynthEditorDoc* CSynthEditorDoc::Instance()
 
 std::unique_ptr<Synth::UI::Controller> CSynthEditorDoc::MakeController()
 {
-	std::unique_ptr<Synth::UI::Controller> controller = std::make_unique<Synth::UI::Controller>();
+	std::unique_ptr<Synth::UI::Controller> controller = std::make_unique<Synth::UI::Controller>(::MIDIKeys);
 	controller->SetView(CSynthEditorView::Instance());
 	controller->SetPlayer(_player.get());
 	return controller;
