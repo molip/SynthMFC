@@ -59,6 +59,7 @@
 #define IDS_EXPLORER                    305
 #define IDS_EDIT_MENU                   306
 #define IDD_BLANK                       310
+#define IDD_GLOBAL                      312
 #define ID_FILE_UPLOAD                  32771
 #define ID_INSERT_MIDI                  32775
 #define ID_INSERT_ENVELOPE              32776
@@ -72,7 +73,7 @@
 #define ID_INSERT_DELAY                 32785
 #define ID_INSERT_ARPEGGIATOR           32786
 #define ID_INSERT_MULTIPLY              32787
-#define ID_INSERT_KNOB              32788
+#define ID_INSERT_KNOB                  32788
 #define ID_FILE_POLYTEST                32797
 #define ID_EDIT_DELETE                  32800
 #define ID_TOOLS_UPLOADMIDIFILE         32801
@@ -82,7 +83,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_RESOURCE_VALUE        314
 #define _APS_NEXT_COMMAND_VALUE         32800
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310

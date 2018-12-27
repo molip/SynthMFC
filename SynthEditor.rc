@@ -186,8 +186,8 @@ BEGIN
         MENUITEM "LFO\tCtrl+0",                 ID_INSERT_LFO
         MENUITEM "Delay",                       ID_INSERT_DELAY
         MENUITEM "Arpeggiator",                 ID_INSERT_ARPEGGIATOR
-        MENUITEM "Multiply",			        ID_INSERT_MULTIPLY
-        MENUITEM "Knob",			            ID_INSERT_KNOB
+        MENUITEM "Multiply",                    ID_INSERT_MULTIPLY
+        MENUITEM "Knob",                        ID_INSERT_KNOB
     END
     POPUP "&Tools"
     BEGIN
@@ -521,8 +521,6 @@ BEGIN
     ID_INSERT_FILTER        "Insert Filter module"
     ID_INSERT_MATHS         "Insert Maths module"
     ID_INSERT_MIXER         "Insert Mixer module"
-    ID_INSERT_MULTIPLY      "Insert Multiply module"
-    ID_INSERT_KNOB          "Insert Knob module"
 END
 
 STRINGTABLE
@@ -530,6 +528,8 @@ BEGIN
     ID_INSERT_LFO           "Insert LFO module"
     ID_INSERT_DELAY         "Insert Delay module"
     ID_INSERT_ARPEGGIATOR   "Insert Arpeggiator module"
+    ID_INSERT_MULTIPLY      "Insert Multiply module"
+    ID_INSERT_KNOB          "Insert Knob module"
     ID_FILE_POLYTEST        "Poly Test"
 END
 
@@ -562,6 +562,14 @@ FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
 END
 
+IDD_GLOBAL DIALOGEX 0, 0, 310, 177
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CONTROL | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,199,156,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,253,156,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -577,6 +585,14 @@ BEGIN
         RIGHTMARGIN, 139
         TOPMARGIN, 7
         BOTTOMMARGIN, 88
+    END
+
+    IDD_GLOBAL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 303
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 170
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -630,6 +646,11 @@ END
 //
 
 IDD_BLANK AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_GLOBAL AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

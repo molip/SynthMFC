@@ -5,12 +5,20 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "SynthEditor.h"
+#include "SynthEditorView.h"
+
+#include "synth/libSynth/Controller.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
 static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
+
+namespace
+{
+	enum class Setting { Polyphony, ArpEnabled, ArpPeriod, ArpOctaves };
+}
 
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
@@ -36,7 +44,7 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
 	ON_WM_SETFOCUS()
-	ON_WM_SETTINGCHANGE()
+	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -161,23 +169,58 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.EnableHeaderCtrl(FALSE);
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
-	m_wndPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("Appearance"));
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("3D Look"), (_variant_t) false, _T("Specifies the window's font will be non-bold and controls will have a 3D border")));
+	const auto& settings = Synth::UI::Controller::GetSettings();
+
+	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(L"Global");
+
+	auto add = [&](const TCHAR* name, auto& val, Setting setting, int min = 0, int max = 0)
+	{
+		auto* prop = new CMFCPropertyGridProperty(name, (_variant_t)val, nullptr, (int)setting);
+		if (max)
+			prop->EnableSpinControl(true, min, max);
+
+		pGroup1->AddSubItem(prop);
+	};
+	
+	add(L"Polyphony", settings.polyphony, Setting::Polyphony, 1, 16);
+	add(L"Arp Enabled", settings.arpEnabled, Setting::ArpEnabled);
+	add(L"Arp Period", settings.arpPeriod, Setting::ArpPeriod, 10, 10000);
+	add(L"Arp Octaves", settings.arpOctaves, Setting::ArpOctaves, 1, 8);
 	m_wndPropList.AddProperty(pGroup1);
+}
+
+LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
+{
+	auto* view = CSynthEditorView::Instance();
+	auto* controller = view ? view->GetController() : nullptr;
+
+	if (!controller)
+		return 1;
+
+	const auto* prop = reinterpret_cast<CMFCPropertyGridProperty*>(lParam);
+	const COleVariant v = prop->GetValue();
+	auto settings = Synth::UI::Controller::GetSettings();
+
+	switch ((Setting)prop->GetData())
+	{
+	case Setting::Polyphony: settings.polyphony = v.uintVal; break;
+	case Setting::ArpEnabled: settings.arpEnabled = v.boolVal; break;
+	case Setting::ArpPeriod: settings.arpPeriod = v.uiVal; break;
+	case Setting::ArpOctaves: settings.arpOctaves = v.uiVal; break;
+	}
+
+	controller->SetSettings(settings);
+
+	view->SetFocus();
+
+	return 0;
 }
 
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
 	m_wndPropList.SetFocus();
-}
-
-void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
-{
-	CDockablePane::OnSettingChange(uFlags, lpszSection);
-	SetPropListFont();
 }
 
 void CPropertiesWnd::SetPropListFont()
