@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 
 namespace
 {
-	enum class Setting { Polyphony, ArpEnabled, ArpPeriod, ArpOctaves };
+	enum class Setting { Polyphony, ArpEnabled, ArpHold, ArpPeriod, ArpOctaves };
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -185,6 +185,7 @@ void CPropertiesWnd::InitPropList()
 	
 	add(L"Polyphony", settings.polyphony, Setting::Polyphony, 1, 16);
 	add(L"Arp Enabled", settings.arpEnabled, Setting::ArpEnabled);
+	add(L"Arp Hold", settings.arpHold, Setting::ArpHold);
 	add(L"Arp Period", settings.arpPeriod, Setting::ArpPeriod, 10, 10000);
 	add(L"Arp Octaves", settings.arpOctaves, Setting::ArpOctaves, 1, 8);
 	m_wndPropList.AddProperty(pGroup1);
@@ -208,6 +209,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 	case Setting::ArpEnabled: settings.arpEnabled = v.boolVal; break;
 	case Setting::ArpPeriod: settings.arpPeriod = v.uiVal; break;
 	case Setting::ArpOctaves: settings.arpOctaves = v.uiVal; break;
+	case Setting::ArpHold: settings.arpHold = v.boolVal; break;
 	}
 
 	controller->SetSettings(settings);
