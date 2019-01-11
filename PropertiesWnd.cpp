@@ -17,7 +17,7 @@ static char THIS_FILE[]=__FILE__;
 
 namespace
 {
-	enum class Setting { Polyphony, ArpEnabled, ArpHold, ArpPeriod, ArpOctaves };
+	enum class Setting { Polyphony, ArpEnabled, ArpHold, ArpPeriod, ArpOctaves, ArpDuty };
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -187,6 +187,7 @@ void CPropertiesWnd::InitPropList()
 	add(L"Arp Enabled", settings.arpEnabled, Setting::ArpEnabled);
 	add(L"Arp Hold", settings.arpHold, Setting::ArpHold);
 	add(L"Arp Period", settings.arpPeriod, Setting::ArpPeriod, 10, 10000);
+	add(L"Arp Duty", settings.arpDuty, Setting::ArpDuty, 1, 100);
 	add(L"Arp Octaves", settings.arpOctaves, Setting::ArpOctaves, 1, 8);
 	m_wndPropList.AddProperty(pGroup1);
 }
