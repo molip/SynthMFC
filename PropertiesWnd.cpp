@@ -209,13 +209,12 @@ LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 	case Setting::Polyphony: settings.polyphony = v.uintVal; break;
 	case Setting::ArpEnabled: settings.arpEnabled = v.boolVal; break;
 	case Setting::ArpPeriod: settings.arpPeriod = v.uiVal; break;
+	case Setting::ArpDuty: settings.arpDuty = v.uiVal; break;
 	case Setting::ArpOctaves: settings.arpOctaves = v.uiVal; break;
 	case Setting::ArpHold: settings.arpHold = v.boolVal; break;
 	}
 
 	controller->SetSettings(settings);
-
-	view->SetFocus();
 
 	return 0;
 }
