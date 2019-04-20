@@ -275,7 +275,7 @@ bool CSynthEditorView::UploadData(const Synth::Buffer& buffer)
 {
 	if (_serial.Open())
 	{
-		_serial.Write(&buffer.front(), (DWORD)buffer.size());
+		_serial.Write(buffer);
 		return true;
 	}
 
