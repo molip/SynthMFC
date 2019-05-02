@@ -14,6 +14,7 @@
 
 #include "synth/libSynth/Controller.h"
 #include "synth/libWinPlayer/WinPlayer.h"
+#include "synth/libWinPlayer/WinMIDIDevice.h"
 
 #include <propkey.h>
 
@@ -39,6 +40,7 @@ END_MESSAGE_MAP()
 CSynthEditorDoc::CSynthEditorDoc()
 {
 	_player = std::make_unique<WinPlayer>();
+	_midiDevice = std::make_unique<WinMIDIDevice>();
 }
 
 CSynthEditorDoc::~CSynthEditorDoc()
@@ -69,6 +71,7 @@ BOOL CSynthEditorDoc::OnNewDocument()
 		return FALSE;
 
 	_controller = MakeController();
+	_midiDevice->SetController(_controller.get());
 
 	return TRUE;
 }
@@ -85,6 +88,7 @@ BOOL CSynthEditorDoc::OnOpenDocument(LPCTSTR lpszPathName)
 		return false;
 
 	_controller = std::move(newController);
+	_midiDevice->SetController(_controller.get());
 	return true;
 }
 

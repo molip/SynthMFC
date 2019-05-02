@@ -11,6 +11,7 @@ namespace Synth
 }
 
 class WinPlayer;
+class WinMIDIDevice;
 
 class CSynthEditorDoc : public CDocument
 {
@@ -28,6 +29,7 @@ private:
 
 	std::unique_ptr<Synth::UI::Controller> _controller;
 	std::unique_ptr<WinPlayer> _player;
+	std::unique_ptr<WinMIDIDevice> _midiDevice;
 
 // Overrides
 public:
