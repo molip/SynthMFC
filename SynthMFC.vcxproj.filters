@@ -23,6 +23,7 @@
     <ClInclude Include="Messages.h" />
     <ClInclude Include="MemoryDC.h" />
     <ClInclude Include="WaveformWnd.h" />
+    <ClInclude Include="CaptureDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileView.cpp" />
@@ -38,6 +39,7 @@
     <ClCompile Include="EditCtrlDialog.cpp" />
     <ClCompile Include="MemoryDC.cpp" />
     <ClCompile Include="WaveformWnd.cpp" />
+    <ClCompile Include="CaptureDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SynthEditor.rc">

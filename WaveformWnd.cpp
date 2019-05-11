@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "WaveformWnd.h"
 #include "SynthEditorView.h"
+#include "MemoryDC.h"
 
 #include "synth/libSynth/Controller.h"
 #include "synth/libSynth/Player.h"
@@ -35,7 +36,7 @@ void WaveformWnd::OnPaint()
 	CRect r;
 	GetClientRect(r);
 	
-	CPaintDC dc(this);
+	MemoryDC dc(*this);
 	dc.FillSolidRect(r, 0x808080);
 
 	if (auto* view = CSynthEditorView::Instance())

@@ -101,6 +101,7 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CaptureDlg.h" />
     <ClInclude Include="EditCtrlDialog.h" />
     <ClInclude Include="FileView.h" />
     <ClInclude Include="MainFrm.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="WaveformWnd.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CaptureDlg.cpp" />
     <ClCompile Include="EditCtrlDialog.cpp" />
     <ClCompile Include="FileView.cpp" />
     <ClCompile Include="MainFrm.cpp" />

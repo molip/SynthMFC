@@ -16,8 +16,10 @@
 #include "EditCtrlDialog.h"
 #include "Messages.h"
 #include "MemoryDC.h"
+#include "CaptureDlg.h"
 
 #include "synth/libSynth/Controller.h"
+#include "synth/libSynth/Player.h"
 #include "synth/libKernel/Debug.h"
 
 #ifdef _DEBUG
@@ -51,11 +53,13 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
 	ON_COMMAND(ID_TOOLS_STOPMIDI, &CSynthEditorView::OnToolsStopMIDI)
+	ON_COMMAND(ID_TOOLS_CAPTURE, &CSynthEditorView::OnCapture)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_PAINT()
 	ON_WM_ERASEBKGND()
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
+	ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 namespace
@@ -448,3 +452,37 @@ void CSynthEditorView::OnToolsStopMIDI()
 {
 	GetController()->StopMIDIFilePlayback();
 }
+
+void CSynthEditorView::OnCapture()
+{
+	auto* player = GetController() ? GetController()->GetPlayer() : nullptr;
+	if (!player)
+		return;
+			
+	if (player->IsCapturing())
+	{
+		player->StopCapture();
+		SetTimer(1, 1000, nullptr);
+	}
+	else
+		player->StartCapture();
+}
+
+void CSynthEditorView::OnTimer(UINT_PTR nIDEvent)
+{
+	if (nIDEvent != 1)
+		return;
+
+	KillTimer(nIDEvent);
+
+	auto* player = GetController() ? GetController()->GetPlayer() : nullptr;
+	if (!player)
+		return;
+
+	if (player->IsCapturing())
+		return;
+
+	CaptureDlg dlg(player->HarvestCapture());
+	dlg.DoModal();
+}
+

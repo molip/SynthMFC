@@ -194,6 +194,7 @@ BEGIN
     BEGIN
         MENUITEM "&Upload MIDI File...",        ID_TOOLS_UPLOADMIDIFILE
         MENUITEM "&Stop MIDI",                  ID_TOOLS_STOPMIDI
+        MENUITEM "Start / Stop Capture",        ID_TOOLS_CAPTURE
     END
     POPUP "&Help"
     BEGIN
@@ -288,6 +289,7 @@ BEGIN
     "7",            ID_INSERT_MATHS,        VIRTKEY, CONTROL, NOINVERT
     "5",            ID_INSERT_TARGET,       VIRTKEY, CONTROL, NOINVERT
     "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
+    VK_TAB,         ID_TOOLS_CAPTURE,       VIRTKEY, NOINVERT
 END
 
 
@@ -540,6 +542,7 @@ BEGIN
     ID_EDIT_DELETE          "Delete selected module"
     ID_TOOLS_UPLOADMIDIFILE "Choose a MIDI file to upload"
     ID_TOOLS_STOPMIDI       "Stop currently playing MIDI file"
+    ID_TOOLS_CAPTURE        "Start / Stop Capture"
 END
 
 #endif    // English (United States) resources
@@ -572,6 +575,15 @@ BEGIN
     PUSHBUTTON      "Cancel",IDCANCEL,253,156,50,14
 END
 
+IDD_CAPTURE DIALOGEX 0, 0, 770, 178
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU | WS_THICKFRAME
+CAPTION "Capture"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Close",IDCANCEL,713,157,50,14
+    LTEXT           "Static",IDC_WAVEFORM,7,7,756,144,WS_BORDER
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -595,6 +607,14 @@ BEGIN
         RIGHTMARGIN, 303
         TOPMARGIN, 7
         BOTTOMMARGIN, 170
+    END
+
+    IDD_CAPTURE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 763
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 171
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -653,6 +673,11 @@ BEGIN
 END
 
 IDD_GLOBAL AFX_DIALOG_LAYOUT
+BEGIN
+    0
+END
+
+IDD_CAPTURE AFX_DIALOG_LAYOUT
 BEGIN
     0
 END

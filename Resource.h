@@ -60,6 +60,8 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_BLANK                       310
 #define IDD_GLOBAL                      312
+#define IDD_CAPTURE                     314
+#define IDC_WAVEFORM                    1000
 #define ID_FILE_UPLOAD                  32771
 #define ID_INSERT_MIDI                  32775
 #define ID_INSERT_ENVELOPE              32776
@@ -79,14 +81,15 @@
 #define ID_EDIT_DELETE                  32800
 #define ID_TOOLS_UPLOADMIDIFILE         32801
 #define ID_TOOLS_STOPMIDI               32802
+#define ID_TOOLS_CAPTURE                32803
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32800
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_RESOURCE_VALUE        316
+#define _APS_NEXT_COMMAND_VALUE         32805
+#define _APS_NEXT_CONTROL_VALUE         1001
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif
