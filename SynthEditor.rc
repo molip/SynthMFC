@@ -282,14 +282,15 @@ BEGIN
     "2",            ID_INSERT_ENVELOPE,     VIRTKEY, CONTROL, NOINVERT
     "6",            ID_INSERT_FILTER,       VIRTKEY, CONTROL, NOINVERT
     "0",            ID_INSERT_LFO,          VIRTKEY, CONTROL, NOINVERT
+    "7",            ID_INSERT_MATHS,        VIRTKEY, CONTROL, NOINVERT
     "1",            ID_INSERT_MIDI,         VIRTKEY, CONTROL, NOINVERT
     "8",            ID_INSERT_MIXER,        VIRTKEY, CONTROL, NOINVERT
     "3",            ID_INSERT_OSCILLATOR,   VIRTKEY, CONTROL, NOINVERT
     "4",            ID_INSERT_POLYMIXER,    VIRTKEY, CONTROL, NOINVERT
-    "7",            ID_INSERT_MATHS,        VIRTKEY, CONTROL, NOINVERT
     "5",            ID_INSERT_TARGET,       VIRTKEY, CONTROL, NOINVERT
-    "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
     VK_TAB,         ID_TOOLS_CAPTURE,       VIRTKEY, NOINVERT
+    "M",            ID_TOOLS_UPLOADMIDIFILE, VIRTKEY, CONTROL, NOINVERT
+    VK_ESCAPE,      ID_TOOLS_STOPMIDI,      VIRTKEY, NOINVERT
 END
 
 
@@ -529,11 +530,11 @@ END
 STRINGTABLE
 BEGIN
     ID_INSERT_LFO           "Insert LFO module"
-    ID_INSERT_CRUSH         "Insert Crush module"
     ID_INSERT_DELAY         "Insert Delay module"
     ID_INSERT_ARPEGGIATOR   "Insert Arpeggiator module"
     ID_INSERT_MULTIPLY      "Insert Multiply module"
     ID_INSERT_KNOB          "Insert Knob module"
+    ID_INSERT_CRUSH         "Insert Crush module"
     ID_FILE_POLYTEST        "Poly Test"
 END
 
