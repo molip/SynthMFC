@@ -18,7 +18,6 @@
 #include "MemoryDC.h"
 #include "CaptureDlg.h"
 
-#include "synth/libSynth/Controller.h"
 #include "synth/libSynth/Player.h"
 #include "synth/libKernel/Debug.h"
 
@@ -60,6 +59,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
 	ON_WM_TIMER()
+	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
 namespace
@@ -78,6 +78,8 @@ namespace
 	{
 		return Synth::Model::Point(point.x, point.y);
 	}
+
+	namespace Timer { enum Type { Capture = 1, Monitor }; }
 }
 
 CSynthEditorView* CSynthEditorView::_instance;
@@ -107,6 +109,16 @@ BOOL CSynthEditorView::PreCreateWindow(CREATESTRUCT& cs)
 	//  the CREATESTRUCT cs
 
 	return CView::PreCreateWindow(cs);
+}
+
+int CSynthEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (__super::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	SetTimer(::Timer::Monitor, 20, nullptr);
+
+	return 0;
 }
 
 // CSynthEditorView drawing
@@ -165,6 +177,8 @@ void CSynthEditorView::OnPaint()
 	if (!GetController())
 		return;
 
+	_monitorAreas.clear();
+
 	for (auto& modIkon : GetController()->GetModuleIkons())
 	{
 		dc->SelectObject(&_font);
@@ -194,7 +208,11 @@ void CSynthEditorView::OnPaint()
 			DrawPin(pin);
 
 		for (auto& pin : modIkon.GetOutputPins())
+		{
 			DrawPin(pin);
+			if (!pin.monitorArea.rect.IsEmpty())
+				_monitorAreas.push_back(pin.monitorArea);
+		}
 	}
 
 	dc->SelectStockObject(BLACK_PEN);
@@ -462,7 +480,7 @@ void CSynthEditorView::OnCapture()
 	if (player->IsCapturing())
 	{
 		player->StopCapture();
-		SetTimer(1, 1000, nullptr);
+		SetTimer(::Timer::Capture, 1000, nullptr);
 	}
 	else
 		player->StartCapture();
@@ -470,19 +488,53 @@ void CSynthEditorView::OnCapture()
 
 void CSynthEditorView::OnTimer(UINT_PTR nIDEvent)
 {
-	if (nIDEvent != 1)
-		return;
+	if (nIDEvent == ::Timer::Capture)
+	{
+		KillTimer(nIDEvent);
 
-	KillTimer(nIDEvent);
+		auto* player = GetController() ? GetController()->GetPlayer() : nullptr;
+		if (!player)
+			return;
 
-	auto* player = GetController() ? GetController()->GetPlayer() : nullptr;
-	if (!player)
-		return;
+		if (player->IsCapturing())
+			return;
 
-	if (player->IsCapturing())
-		return;
-
-	CaptureDlg dlg(player->HarvestCapture());
-	dlg.DoModal();
+		CaptureDlg dlg(player->HarvestCapture());
+		dlg.DoModal();
+	}
+	else if (nIDEvent == ::Timer::Monitor)
+	{
+		CDC* dc = GetDC();
+		DrawMonitors(*dc);
+		ReleaseDC(dc);
+	}
 }
 
+void CSynthEditorView::DrawMonitors(CDC& dc) const
+{
+	for (auto& monitorArea : _monitorAreas)
+	{
+		auto ikon = GetController()->GetMonitorIkon(monitorArea);
+		if (ikon.rect.IsEmpty())
+			continue;
+
+		auto rect = MakeCRect(ikon.rect);
+
+		const int x = ikon.rect.Left() + ikon.activeWidth;
+		dc.SelectStockObject(NULL_PEN);
+
+		auto r1 = rect;
+		r1.right = x;
+		dc.SelectStockObject(BLACK_BRUSH);
+		dc.Rectangle(r1);
+
+		auto r2 = rect;
+		r2.left = x;
+		dc.SelectStockObject(WHITE_BRUSH);
+		dc.Rectangle(r2);
+
+		dc.SelectStockObject(NULL_BRUSH);
+		dc.SelectStockObject(BLACK_PEN);
+		dc.Rectangle(rect);
+	}
+}

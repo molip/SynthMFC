@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "synth/libSynth/Controller.h"
 #include "synth/libSynth/View.h"
 
 #include "Serial.h"
@@ -60,11 +61,15 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
+private:
+	void DrawMonitors(CDC& dc) const;
+
 protected:
 	static CSynthEditorView* _instance;
 	std::unique_ptr<EditCtrlDialog> _editCtrlDialog;
 	CFont _font, _smallFont;
 	SerialPort _serial;
+	std::vector<Synth::UI::ModuleIkon::MonitorArea> _monitorAreas;
 
 // Generated message map functions
 protected:
@@ -73,6 +78,7 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 public:
+	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnPaint();
 	afx_msg BOOL OnEraseBkgnd(CDC*);
 	afx_msg void OnFileUpload();
