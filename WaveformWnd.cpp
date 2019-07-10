@@ -48,20 +48,23 @@ void WaveformWnd::OnPaint()
 
 void WaveformWnd::DrawBuffer(CDC& dc, const AudioBuffer& buffer) const
 {
+	CRect r;
+	GetClientRect(r);
+
 	int start = 0;
 	for (int i = 1; i < buffer.size(); ++i)
-		if (buffer[i] < 0 && buffer[i - 1] >= 0)
+		if (buffer[i] >= 0 && buffer[i - 1] < 0)
 		{
 			start = i;
 			break;
 		}
 
 
-	const int midY = 200;
+	const int midY = r.bottom >> 1;
 
 	auto getY = [midY](int16_t val)
 	{
-		return midY + (val >> 8);
+		return midY - (val >> 8);
 	};
 
 	dc.MoveTo(0, getY(buffer[start]));
