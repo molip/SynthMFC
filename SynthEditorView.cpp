@@ -93,7 +93,6 @@ CSynthEditorView::CSynthEditorView()
 
 	LOGFONT lf;
 	_font.GetLogFont(&lf);
-	lf.lfHeight = long(lf.lfHeight * 0.7);
 
 	_smallFont.CreateFontIndirect(&lf);
 }
