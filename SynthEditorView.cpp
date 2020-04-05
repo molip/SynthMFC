@@ -519,21 +519,19 @@ void CSynthEditorView::DrawMonitors(CDC& dc) const
 
 		auto rect = MakeCRect(ikon.rect);
 
-		const int x = ikon.rect.Left() + ikon.activeWidth;
-		dc.SelectStockObject(NULL_PEN);
-
-		auto r1 = rect;
-		r1.right = x;
-		dc.SelectStockObject(BLACK_BRUSH);
-		dc.Rectangle(r1);
-
-		auto r2 = rect;
-		r2.left = x;
 		dc.SelectStockObject(WHITE_BRUSH);
-		dc.Rectangle(r2);
-
-		dc.SelectStockObject(NULL_BRUSH);
 		dc.SelectStockObject(BLACK_PEN);
 		dc.Rectangle(rect);
+
+		dc.SelectStockObject(BLACK_BRUSH);
+		dc.SelectStockObject(NULL_PEN);
+		auto r1 = rect;
+		for (size_t i = 0; i < ikon.activeWidths.size(); ++i)
+		{
+			r1.right = r1.left + ikon.activeWidths[i];
+			r1.bottom = int(rect.top + (i + 1) * rect.Height() / ikon.activeWidths.size());
+			dc.Rectangle(r1);
+			r1.top = r1.bottom;
+		}
 	}
 }
