@@ -86,7 +86,7 @@ CSynthEditorView* CSynthEditorView::_instance;
 
 CSynthEditorView::CSynthEditorView()
 {
-	KERNEL_ASSERT(!_instance);
+//	KERNEL_ASSERT(!_instance);
 	_instance = this;
 
 	_font.CreateStockObject(DEFAULT_GUI_FONT);
@@ -384,6 +384,8 @@ void CSynthEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 void CSynthEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	CView* view = static_cast<CFrameWnd*>(::AfxGetMainWnd())->GetActiveView();
+
 	GetController()->OnLButtonDown(MakePoint(point));
 }
 

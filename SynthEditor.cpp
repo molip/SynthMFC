@@ -9,7 +9,7 @@
 #include "MainFrm.h"
 
 #include "SynthEditorDoc.h"
-#include "SynthEditorView.h"
+#include "TabView.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -21,7 +21,7 @@
 BEGIN_MESSAGE_MAP(CSynthEditorApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CSynthEditorApp::OnAppAbout)
 	// Standard file based document commands
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_NEW, &OnFileNew)
 	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
 	// Standard print setup command
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
@@ -94,7 +94,7 @@ BOOL CSynthEditorApp::InitInstance()
 		IDR_MAINFRAME,
 		RUNTIME_CLASS(CSynthEditorDoc),
 		RUNTIME_CLASS(CMainFrame),       // main SDI frame window
-		RUNTIME_CLASS(CSynthEditorView));
+		RUNTIME_CLASS(TabView));
 	if (!pDocTemplate)
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
@@ -121,6 +121,11 @@ BOOL CSynthEditorApp::InitInstance()
 }
 
 // CSynthEditorApp message handlers
+
+void CSynthEditorApp::OnFileNew()
+{
+	__super::OnFileNew();
+}
 
 
 // CAboutDlg dialog used for App About

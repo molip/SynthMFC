@@ -20,7 +20,7 @@ protected: // create from serialization only
 	DECLARE_DYNCREATE(CSynthEditorDoc)
 
 public:
-	static CSynthEditorDoc* Instance();
+	//static CSynthEditorDoc* Instance();
 
 	Synth::UI::Controller& GetController() { return *_controller; }
 

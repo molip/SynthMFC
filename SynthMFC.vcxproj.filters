@@ -24,6 +24,8 @@
     <ClInclude Include="MemoryDC.h" />
     <ClInclude Include="WaveformWnd.h" />
     <ClInclude Include="CaptureDlg.h" />
+    <ClInclude Include="TabView.h" />
+    <ClInclude Include="TabDoc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileView.cpp" />
@@ -40,6 +42,8 @@
     <ClCompile Include="MemoryDC.cpp" />
     <ClCompile Include="WaveformWnd.cpp" />
     <ClCompile Include="CaptureDlg.cpp" />
+    <ClCompile Include="TabView.cpp" />
+    <ClCompile Include="TabDoc.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SynthEditor.rc">

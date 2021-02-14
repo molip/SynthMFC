@@ -39,6 +39,7 @@ protected:  // control bar embedded members
 	CFileView         m_wndFileView;
 	COutputWnd        m_wndOutput;
 	CPropertiesWnd    m_wndProperties;
+	CTabView* m_pTabView;
 
 // Generated message map functions
 protected:
@@ -46,6 +47,7 @@ protected:
 	afx_msg void OnViewCustomize();
 	afx_msg LRESULT OnToolbarCreateNew(WPARAM wp, LPARAM lp);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg void OnNewTab();
 	DECLARE_MESSAGE_MAP()
 
 	BOOL CreateDockingWindows();

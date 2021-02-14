@@ -4,6 +4,7 @@
 
 #include "stdafx.h"
 #include "SynthEditor.h"
+#include "SynthEditorView.h"
 
 #include "MainFrm.h"
 
@@ -18,6 +19,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWndEx)
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_WM_CREATE()
 	ON_COMMAND(ID_VIEW_CUSTOMIZE, &CMainFrame::OnViewCustomize)
+	ON_COMMAND(ID_VIEW_NEWTAB, &CMainFrame::OnNewTab)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
@@ -32,7 +34,7 @@ static UINT indicators[] =
 
 // CMainFrame construction/destruction
 
-CMainFrame::CMainFrame()
+CMainFrame::CMainFrame() : m_pTabView()
 {
 	// TODO: add member initialization code here
 }
@@ -45,6 +47,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CFrameWndEx::OnCreate(lpCreateStruct) == -1)
 		return -1;
+
+	m_pTabView = dynamic_cast<CTabView*>(GetWindow(GW_CHILD));
+	ASSERT(m_pTabView);
 
 	BOOL bNameValid;
 
@@ -236,4 +241,9 @@ void CMainFrame::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CFrameWndEx::OnSettingChange(uFlags, lpszSection);
 	m_wndOutput.UpdateFonts();
+}
+
+void CMainFrame::OnNewTab()
+{
+	m_pTabView->AddView(RUNTIME_CLASS(CSynthEditorView), _T("View"), 100);
 }

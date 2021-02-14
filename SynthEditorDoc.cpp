@@ -49,13 +49,13 @@ CSynthEditorDoc::~CSynthEditorDoc()
 	_controller->SetPlayer(nullptr);
 }
 
-CSynthEditorDoc* CSynthEditorDoc::Instance()
-{
-	if (CFrameWnd* frame = static_cast<CFrameWnd*>(::AfxGetMainWnd()))
-		if (CView* view = frame->GetActiveView())
-			return static_cast<CSynthEditorDoc*>(view->GetDocument());
-	return nullptr;
-}
+//CSynthEditorDoc* CSynthEditorDoc::Instance()
+//{
+//	if (CFrameWnd* frame = static_cast<CFrameWnd*>(::AfxGetMainWnd()))
+//		if (CView* view = frame->GetActiveView())
+//			return static_cast<CSynthEditorDoc*>(view->GetDocument());
+//	return nullptr;
+//}
 
 std::unique_ptr<Synth::UI::Controller> CSynthEditorDoc::MakeController()
 {
