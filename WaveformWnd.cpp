@@ -67,6 +67,12 @@ void WaveformWnd::DrawBuffer(CDC& dc, const AudioBuffer& buffer) const
 		return midY - (val >> 8);
 	};
 
+	dc.MoveTo(0, getY(0x7fff));
+	dc.LineTo(r.right, getY(0x7fff));
+
+	dc.MoveTo(0, getY(-0x8000));
+	dc.LineTo(r.right, getY(-0x8000));
+
 	dc.MoveTo(0, getY(buffer[start]));
 
 	for (int i = start + 1; i < buffer.size(); ++i)

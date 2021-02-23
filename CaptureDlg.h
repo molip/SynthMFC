@@ -6,7 +6,7 @@ class CaptureDlg : public CDialogEx
 {
 	friend class Control;
 public:
-	CaptureDlg(Synth::Player::AudioBuffer&& buffer, CWnd* pParent = nullptr);
+	CaptureDlg(Synth::Player::Capture&& capture, CWnd* pParent = nullptr);
 
 protected:
 	class Control : public CWnd
@@ -24,7 +24,7 @@ protected:
 	CRect GetChildRect(int id) const;
 	void UpdateScrollbar();
 
-	Synth::Player::AudioBuffer _buffer;
+	Synth::Player::Capture _capture;
 	Control _control;
 	CSize _closeOffset, _waveformOffset;
 	int _zoom = 1;

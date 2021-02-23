@@ -18,7 +18,7 @@ BEGIN_MESSAGE_MAP(CaptureDlg::Control, CWnd)
 	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
-CaptureDlg::CaptureDlg(Synth::Player::AudioBuffer&& buffer, CWnd* pParent) : CDialogEx(IDD_CAPTURE, pParent), _buffer(std::move(buffer))
+CaptureDlg::CaptureDlg(Synth::Player::Capture&& capture, CWnd* pParent) : CDialogEx(IDD_CAPTURE, pParent), _capture(std::move(capture))
 {
 }
 
@@ -66,7 +66,7 @@ void CaptureDlg::UpdateScrollbar()
 {
 	CRect rWaveform = GetChildRect(IDC_WAVEFORM);
 	SCROLLINFO si{ sizeof si, SIF_RANGE | SIF_PAGE };
-	si.nMax = int(_buffer.size()) / _zoom;// -rWaveform.Width();
+	si.nMax = int(_capture.audio.size()) / _zoom;
 	si.nPage = rWaveform.Width();
 	_control.SetScrollInfo(SB_HORZ, &si);
 }
@@ -84,13 +84,16 @@ CRect CaptureDlg::GetChildRect(int id) const
 void CaptureDlg::Control::OnPaint()
 {
 	const auto& dlg = static_cast<CaptureDlg&>(*GetParent());
-	const auto& buffer = dlg._buffer;
+	const auto& buffer = dlg._capture.audio;
+	const auto& monitors = dlg._capture.monitors;
+
+	ASSERT(buffer.size() == monitors.size());
 
 	CRect r;
 	GetClientRect(r);
 
 	const int midY = r.Height() / 2;
-	const int start = GetScrollPos(SB_HORZ);
+	const size_t start = GetScrollPos(SB_HORZ);
 
 	auto getY = [midY](int16_t val)
 	{
@@ -100,12 +103,33 @@ void CaptureDlg::Control::OnPaint()
 	MemoryDC dc(*this);
 	dc.FillSolidRect(r, 0x808080);
 
-	dc.MoveTo(0, getY(buffer[start * dlg._zoom]));
+	const size_t count = std::min(size_t(r.Width()), buffer.size() / dlg._zoom - start);
+	const size_t zoom = size_t(dlg._zoom);
+	const size_t startX = start * zoom;
 
-	const int count = std::min(r.Width(), int(buffer.size()) / dlg._zoom - start);
+	int colourIndex = 1;
+	// Assume all monitor samples have the same number of monitors and channels.
+	for (size_t iMonitor = 0; iMonitor < monitors.front().size(); ++iMonitor)
+	{
+		CPen monitorPen(PS_SOLID, 1, RGB(255 * (colourIndex & 1), 255 * ((colourIndex & 2) >> 1), 255 * ((colourIndex & 4) >> 2)));
+		for (size_t iChannel = 0; iChannel < monitors.front()[iMonitor].size(); ++iChannel)
+		{
+			dc.SelectObject(&monitorPen);
+			dc.MoveTo(0, getY(int16_t(monitors[startX][iMonitor][iChannel] * 0x7fff)));
+			for (int x = 1; x < count; ++x)
+				dc.LineTo(x, getY(int16_t(monitors[startX + x * zoom][iMonitor][iChannel] * 0x7fff)));
+		}
 
+		colourIndex = colourIndex == 7 ? 1 : colourIndex + 1;
+	}
+
+	CPen audioPen(PS_SOLID, 1, 0x000000ul);
+	dc.SelectObject(&audioPen);
+	dc.MoveTo(0, getY(buffer[startX]));
 	for (int x = 1; x < count; ++x)
-		dc.LineTo(x, getY(buffer[(start + x) * dlg._zoom]));
+		dc.LineTo(x, getY(buffer[startX + x * zoom]));
+
+	dc.SelectStockObject(BLACK_PEN);
 }
 
 void CaptureDlg::Control::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
