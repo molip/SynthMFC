@@ -47,7 +47,7 @@ BEGIN_MESSAGE_MAP(CSynthEditorView, CView)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_UNDO, &CSynthEditorView::OnUpdateEditUndo)
 	ON_COMMAND(ID_EDIT_REDO, &CSynthEditorView::OnEditRedo)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_REDO, &CSynthEditorView::OnUpdateEditRedo)
-	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_CRUSH, &CSynthEditorView::OnInsertModule)
+	ON_COMMAND_RANGE(ID_INSERT_MIDI, ID_INSERT_SEQUENCE, &CSynthEditorView::OnInsertModule)
 	ON_COMMAND(ID_EDIT_DELETE, &CSynthEditorView::OnDeleteModule)
 	ON_UPDATE_COMMAND_UI(ID_EDIT_DELETE, &CSynthEditorView::OnUpdateDeleteModule)
 	ON_COMMAND(ID_TOOLS_UPLOADMIDIFILE, &CSynthEditorView::OnToolsUploadMIDIFile)
@@ -173,6 +173,15 @@ void CSynthEditorView::OnPaint()
 			DrawValue(pin.scaleRect, pin.scale);
 	};
 
+	auto DrawField = [&] (const Synth::UI::ModuleIkon::Field& field)
+	{
+		dc->SelectStockObject(BLACK_PEN);
+		CRect fieldRect = MakeCRect(field.rect);
+		fieldRect.DeflateRect(2, 0);
+		dc->Rectangle(fieldRect);
+		dc->DrawText(CString(field.content.c_str()), fieldRect, DT_RIGHT | DT_VCENTER | DT_SINGLELINE);
+	};
+
 	if (!GetController())
 		return;
 
@@ -202,6 +211,9 @@ void CSynthEditorView::OnPaint()
 		}
 
 		dc->SelectObject(&_smallFont);
+
+		for (auto& field : modIkon.GetFields())
+			DrawField(field);
 
 		for (auto& pin : modIkon.GetInputPins())
 			DrawPin(pin);
@@ -360,7 +372,7 @@ void CSynthEditorView::OnFilePolyTest()
 void CSynthEditorView::OnInsertModule(UINT id)
 {
 	int index = id - ID_INSERT_MIDI;
-	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "math", "mixr", "pitc", "lfo", "dely", "arpe", "mult", "knob", "crsh" };
+	const auto types = { "midi", "envl", "oscl", "pmix", "trgt", "filt", "math", "mixr", "pitc", "lfo", "dely", "arpe", "mult", "knob", "crsh", "sqnc" };
 	if (index >= 0 && index < types.size())
 	{
 		GetController()->InsertModule(*(types.begin() + index));

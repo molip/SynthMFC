@@ -189,6 +189,7 @@ BEGIN
         MENUITEM "Arpeggiator",                 ID_INSERT_ARPEGGIATOR
         MENUITEM "Multiply",                    ID_INSERT_MULTIPLY
         MENUITEM "Knob",                        ID_INSERT_KNOB
+        MENUITEM "Sequence",                    ID_INSERT_SEQUENCE
     END
     POPUP "&Tools"
     BEGIN
@@ -535,6 +536,7 @@ BEGIN
     ID_INSERT_MULTIPLY      "Insert Multiply module"
     ID_INSERT_KNOB          "Insert Knob module"
     ID_INSERT_CRUSH         "Insert Crush module"
+    ID_INSERT_SEQUENCE      "Insert Sequence module"
     ID_FILE_POLYTEST        "Poly Test"
 END
 

@@ -77,6 +77,7 @@
 #define ID_INSERT_MULTIPLY              32787
 #define ID_INSERT_KNOB                  32788
 #define ID_INSERT_CRUSH                 32789
+#define ID_INSERT_SEQUENCE              32790
 #define ID_FILE_POLYTEST                32797
 #define ID_EDIT_DELETE                  32800
 #define ID_TOOLS_UPLOADMIDIFILE         32801
